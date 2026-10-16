@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiMenu, FiX } from 'react-icons/fi';
 import ThemeToggle from './ThemeToggle.jsx';
+import useActiveSection from '../hooks/useActiveSection.js';
 import { profile } from '../data/portfolio.js';
 
 const LINKS = [
@@ -11,13 +12,18 @@ const LINKS = [
   { to: '/projects', label: 'Projects' },
   { to: '/#journey', label: 'Journey' },
   { to: '/#certifications', label: 'Certificates' },
+  { to: '/#resume', label: 'Resume' },
   { to: '/#contact', label: 'Contact' },
 ];
+
+// Home-page section ids that each link highlights while in view ("/projects" maps to #projects).
+const SECTION_IDS = LINKS.map(({ to }) => (to.startsWith('/#') ? to.slice(2) : to.slice(1)));
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const activeSection = useActiveSection(SECTION_IDS, location.pathname === '/');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -32,15 +38,18 @@ export default function Navbar() {
   const initials = profile.name.split(' ').map((w) => w[0]).join('');
 
   const renderLinks = () =>
-    LINKS.map(({ to, label }) =>
-      to.startsWith('/#') ? (
-        <Link key={to} to={to} className="nav-link">{label}</Link>
+    LINKS.map(({ to, label }, i) => {
+      const inView = activeSection === SECTION_IDS[i];
+      return to.startsWith('/#') ? (
+        <Link key={to} to={to} className={`nav-link${inView ? ' active' : ''}`} aria-current={inView ? 'location' : undefined}>
+          {label}
+        </Link>
       ) : (
-        <NavLink key={to} to={to} className={({ isActive }) => `nav-link${isActive ? ' active' : ''}`}>
+        <NavLink key={to} to={to} className={({ isActive }) => `nav-link${isActive || inView ? ' active' : ''}`}>
           {label}
         </NavLink>
-      )
-    );
+      );
+    });
 
   return (
     <header className={`navbar${scrolled ? ' scrolled' : ''}`}>
