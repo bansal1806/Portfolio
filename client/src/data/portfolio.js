@@ -7,13 +7,13 @@ export const profile = {
   name: 'Shourya Bansal',
   roles: ['MERN Stack Developer', 'React Developer', 'Node.js & Express Developer', 'Problem Solver'],
   tagline: 'I build fast, accessible and delightful full-stack web apps with MongoDB, Express, React and Node.js.',
-  email: 'shouryabansal45@gmail.com',
+  email: 'shouryabansal02@gmail.com',
   location: 'India',
   status: 'Student · Open to internships & fresher roles',
-  photo: '/images/profile.svg', // replace with /images/profile.jpg
+  photo: '/images/Bansal.png', // replace with /images/profile.jpg
   socials: {
-    github: 'https://github.com/your-username',
-    linkedin: 'https://www.linkedin.com/in/your-profile',
+    github: 'https://github.com/bansal1806',
+    linkedin: 'https://www.linkedin.com/in/shourya18',
   },
   bio: [
     "Hi! I'm Shourya, a Computer Science student and aspiring full-stack developer who loves turning ideas into working products. Most of my work lives in the MERN stack — designing REST APIs with Express, modelling data in MongoDB and crafting responsive interfaces in React.",
