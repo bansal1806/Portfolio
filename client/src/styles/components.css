@@ -1,0 +1,157 @@
+/* ───────────────────────── Scroll progress ───────────────────────── */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--gradient);
+  transform-origin: 0 50%;
+  z-index: 120;
+}
+
+/* ───────────────────────── Navbar ───────────────────────── */
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
+  border-bottom: 1px solid transparent;
+}
+.navbar.scrolled,
+.navbar:has(.mobile-menu) {
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--border);
+}
+
+.nav-inner {
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--gradient);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+}
+.brand-name { font-family: var(--font-display); font-size: 1.05rem; }
+
+.nav-links { gap: 4px; }
+.nav-link {
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.2s, background-color 0.2s;
+}
+.nav-link:hover,
+.nav-link.active { color: var(--text); background: var(--primary-soft); }
+
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+
+.mobile-menu { overflow: hidden; border-top: 1px solid var(--border); }
+.mobile-menu-inner { display: flex; flex-direction: column; padding-block: 12px 18px; }
+.mobile-menu .nav-link { padding: 12px 14px; font-size: 1rem; border-radius: var(--radius-sm); }
+
+/* ───────────────────────── Footer ───────────────────────── */
+.footer { border-top: 1px solid var(--border); padding-block: 32px; background: var(--bg); }
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.footer-name { font-family: var(--font-display); font-weight: 700; margin: 0; }
+.footer .small { margin: 0; }
+
+.socials { display: flex; gap: 10px; }
+
+/* ───────────────────────── Section heading ───────────────────────── */
+.section-head { text-align: center; max-width: 640px; margin: 0 auto clamp(36px, 6vw, 56px); }
+.section-eyebrow {
+  display: inline-block;
+  padding: 4px 12px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.section-title { font-size: clamp(1.9rem, 4.5vw, 2.7rem); }
+.section-sub { color: var(--text-muted); margin: 0; }
+
+/* ───────────────────────── Card ───────────────────────── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* ───────────────────────── Chips / badges ───────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chip:hover { border-color: var(--primary); color: var(--text); }
+.chip[aria-pressed='true'] {
+  background: var(--gradient);
+  border-color: transparent;
+  color: #fff;
+}
+
+/* ───────────────────────── Modal / lightbox ───────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(5, 5, 15, 0.75);
+  backdrop-filter: blur(6px);
+}
+.modal {
+  position: relative;
+  width: min(820px, 100%);
+  max-height: 90vh;
+  overflow: auto;
+  padding: 16px;
+}
+.modal img { width: 100%; border-radius: var(--radius-sm); }
+.modal-close { position: absolute; top: 10px; right: 10px; }
+.modal-caption { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
