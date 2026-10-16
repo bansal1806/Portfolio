@@ -10,11 +10,12 @@ export default function ScrollManager() {
       window.scrollTo({ top: 0 });
       return;
     }
-    // Wait a frame so the target section has rendered after a route change.
-    const id = requestAnimationFrame(() => {
+    // Defer so the target section has rendered after a route change and the
+    // mobile menu has started collapsing (which would otherwise cancel the scroll).
+    const id = setTimeout(() => {
       document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
-    });
-    return () => cancelAnimationFrame(id);
+    }, 60);
+    return () => clearTimeout(id);
   }, [pathname, hash]);
 
   return null;
