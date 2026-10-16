@@ -6,7 +6,7 @@ It has animated sections, dark/light mode, a project showcase with filters, CV d
 | | Link |
 |---|---|
 | 🌐 Live site (Vercel) | https://your-portfolio.vercel.app |
-| ⚙️ API (Render) | https://portfolio-api.onrender.com/api/health |
+| ⚙️ API health check | https://your-portfolio.vercel.app/api/health |
 
 <p align="center">
   <img src="docs/screenshot-dark.png" alt="Desktop, dark mode" width="72%" />
@@ -89,9 +89,8 @@ npm run install:all
 
 # environment variables (never commit the real .env files)
 cp server/.env.example server/.env    # then set MONGODB_URI, etc.
-cp client/.env.example client/.env    # VITE_API_URL=http://localhost:5000
 
-npm run dev        # API → http://localhost:5000, site → http://localhost:5173
+npm run dev        # site → http://localhost:5173 (Vite proxies /api → Express on :5000)
 npm test           # API tests (uses an in-memory MongoDB)
 ```
 
@@ -100,10 +99,10 @@ npm test           # API tests (uses an in-memory MongoDB)
 | File | Variable | Purpose |
 |---|---|---|
 | `server/.env` | `MONGODB_URI` | MongoDB connection string |
-| | `CLIENT_ORIGIN` | Comma-separated origins allowed by CORS (e.g. your Vercel URL) |
+| | `CLIENT_ORIGIN` | *Only for a separate API domain:* comma-separated origins allowed by CORS |
 | | `PORT` | API port (Render sets this automatically) |
 | | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NOTIFY_EMAIL` | *Optional:* email notification for new messages |
-| `client/.env` | `VITE_API_URL` | Base URL of the API, no trailing slash |
+| `client/.env` | `VITE_API_URL` | *Only for a separate API domain:* base URL of the API. Leave unset when the API is served under `/api` on the same domain |
 
 ## Updating content
 
@@ -113,19 +112,27 @@ npm test           # API tests (uses an in-memory MongoDB)
 
 ## Deployment
 
-### Backend → Render
+### Vercel (one project, two services)
+
+The root `vercel.json` deploys both apps as **Vercel services** on a single domain:
+
+| Service | Folder | Public path |
+|---|---|---|
+| `client` | `client/` (Vite) | `/*` |
+| `portfolio-api` | `server/` (Express, entry `src/index.js`) | `/api/*` |
+
+The browser calls the API on the same domain (`/api/contact`, `/api/cv/pdf`), so there's no CORS setup and no API URL to configure.
+
 1. Create a free **MongoDB Atlas** cluster, add a database user, and allow access from `0.0.0.0/0` under *Network Access*.
-2. On Render, choose **New → Blueprint** and select this repo. `render.yaml` sets up the service from `/server`.
-   *(Or choose New → Web Service with root directory `server`, build command `npm ci --omit=dev` and start command `npm start`.)*
-3. Set `MONGODB_URI` and `CLIENT_ORIGIN=https://<your-site>.vercel.app` in the Render dashboard.
-4. Check that `https://<your-api>.onrender.com/api/health` returns `"database": "connected"`.
+2. On Vercel, choose **Add New → Project**, import the repo, and leave **Root Directory** as the repo root.
+3. Add the environment variable `MONGODB_URI` (plus the optional `SMTP_*` / `NOTIFY_EMAIL` for email notifications).
+4. Deploy, then check that `https://<your-site>.vercel.app/api/health` returns `"database": "connected"`.
 
-### Frontend → Vercel
-1. **Add New → Project**, import the repo and set **Root Directory** to `client` (Vercel detects Vite).
-2. Add the environment variable `VITE_API_URL=https://<your-api>.onrender.com`.
-3. Deploy. `vercel.json` handles SPA rewrites so `/projects/...` deep links work.
+Run `vercel dev` from the repo root to test both services together locally.
 
-> Render's free tier sleeps when idle. The site pings `/api/health` on load to wake it up, but the first request after a long idle period can still take ~30 s.
+### Alternative: separate hosts (Vercel + Render)
+
+`render.yaml` deploys only the API to Render, and `client/vercel.json` / `client/netlify.toml` deploy only the frontend with root directory `client`. In this setup set `VITE_API_URL=https://<your-api>.onrender.com` on the frontend and `CLIENT_ORIGIN=https://<your-site>.vercel.app` on the API.
 
 ## License
 
