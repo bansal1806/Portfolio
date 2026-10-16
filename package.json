@@ -1,0 +1,15 @@
+{
+  "name": "mern-portfolio",
+  "private": true,
+  "description": "Personal portfolio built with MongoDB, Express, React and Node.js",
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n api,web -c magenta,cyan \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build",
+    "test": "npm --prefix server test",
+    "generate:cv": "npm --prefix server run generate:cv"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
+}
