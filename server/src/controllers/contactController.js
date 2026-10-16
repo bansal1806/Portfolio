@@ -1,10 +1,12 @@
 import Message from '../models/Message.js';
-import { isDBConnected } from '../config/db.js';
+import { connectDB, isDBConnected } from '../config/db.js';
 import { sendContactNotification } from '../utils/mailer.js';
 
 // POST /api/contact
 export async function createMessage(req, res, next) {
   try {
+    // Serverless instances may have lost the connection while idle — try once to reconnect.
+    if (!isDBConnected()) await connectDB(process.env.MONGODB_URI);
     if (!isDBConnected()) {
       return res.status(503).json({ success: false, message: 'Database unavailable, please try again later.' });
     }

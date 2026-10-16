@@ -16,16 +16,26 @@ export function createApp() {
     .map((o) => o.trim())
     .filter(Boolean);
 
-  app.set('trust proxy', 1); // Render/Railway sit behind a proxy
+  app.set('trust proxy', 1); // Vercel/Render sit behind a proxy
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
   app.use(
-    cors({
-      origin(origin, cb) {
-        // allow same-origin / curl requests (no Origin header) and whitelisted origins
-        if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
-        return cb(new Error(`Origin ${origin} not allowed by CORS`));
-      },
-      exposedHeaders: ['Content-Disposition'],
+    cors((req, cb) => {
+      const origin = req.header('Origin');
+      // When the client and API share a domain (Vercel services), browsers still send
+      // an Origin header on POST. Treat it as same-origin when the browser says so
+      // (Sec-Fetch-Site can't be set by page scripts) or when it matches the API host.
+      const host = req.header('x-forwarded-host') || req.header('host');
+      let sameOrigin = req.header('sec-fetch-site') === 'same-origin';
+      try {
+        sameOrigin ||= Boolean(origin && host && new URL(origin).host === host);
+      } catch {
+        /* malformed Origin header, e.g. "null" */
+      }
+      // Also allow non-browser requests (no Origin header) and whitelisted origins.
+      if (!origin || sameOrigin || allowedOrigins.includes(origin)) {
+        return cb(null, { origin: true, exposedHeaders: ['Content-Disposition'] });
+      }
+      return cb(new Error(`Origin ${origin} not allowed by CORS`));
     })
   );
   app.use(express.json({ limit: '20kb' }));

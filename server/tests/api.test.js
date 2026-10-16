@@ -2,7 +2,7 @@ import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import request from 'supertest';
 import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import { MongoMemoryServer } from 'mongodb-memory-server-core';
 
 import { createApp } from '../src/app.js';
 import Message from '../src/models/Message.js';
@@ -98,6 +98,23 @@ describe('Errors and CORS', () => {
   it('returns JSON 404 for unknown routes', async () => {
     const res = await request(app).get('/api/does-not-exist').expect(404);
     assert.equal(res.body.success, false);
+  });
+
+  it('allows same-origin requests when client and API share a domain', async () => {
+    const res = await request(app)
+      .get('/api/health')
+      .set('Host', 'portfolio.vercel.app')
+      .set('Origin', 'https://portfolio.vercel.app')
+      .expect(200);
+    assert.equal(res.headers['access-control-allow-origin'], 'https://portfolio.vercel.app');
+  });
+
+  it('allows requests the browser marks as same-origin (e.g. behind a proxy)', async () => {
+    await request(app)
+      .get('/api/health')
+      .set('Origin', 'https://portfolio.vercel.app')
+      .set('Sec-Fetch-Site', 'same-origin')
+      .expect(200);
   });
 
   it('blocks requests from origins that are not whitelisted', async () => {
