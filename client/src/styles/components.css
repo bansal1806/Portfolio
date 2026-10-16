@@ -155,3 +155,14 @@
 .modal img { width: 100%; border-radius: var(--radius-sm); }
 .modal-close { position: absolute; top: 10px; right: 10px; }
 .modal-caption { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+
+/* ───────────────────────── Page loader ───────────────────────── */
+.page-loader { min-height: 70vh; display: grid; place-items: center; }
+.loader-ring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  animation: spin 0.8s linear infinite;
+}
