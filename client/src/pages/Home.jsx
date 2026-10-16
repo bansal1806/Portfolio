@@ -5,6 +5,8 @@ import Skills from '../sections/Skills.jsx';
 import Projects from '../sections/Projects.jsx';
 import Timeline from '../sections/Timeline.jsx';
 import Certifications from '../sections/Certifications.jsx';
+import Resume from '../sections/Resume.jsx';
+import Contact from '../sections/Contact.jsx';
 import { profile } from '../data/portfolio.js';
 
 export default function Home() {
@@ -20,6 +22,8 @@ export default function Home() {
       <Projects />
       <Timeline />
       <Certifications />
+      <Resume />
+      <Contact />
     </>
   );
 }
