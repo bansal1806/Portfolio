@@ -3,6 +3,8 @@ import Hero from '../sections/Hero.jsx';
 import About from '../sections/About.jsx';
 import Skills from '../sections/Skills.jsx';
 import Projects from '../sections/Projects.jsx';
+import Timeline from '../sections/Timeline.jsx';
+import Certifications from '../sections/Certifications.jsx';
 import { profile } from '../data/portfolio.js';
 
 export default function Home() {
@@ -16,6 +18,8 @@ export default function Home() {
       <About />
       <Skills />
       <Projects />
+      <Timeline />
+      <Certifications />
     </>
   );
 }

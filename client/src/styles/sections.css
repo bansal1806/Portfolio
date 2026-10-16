@@ -320,3 +320,119 @@
 .other { display: flex; align-items: center; gap: 12px; padding: 12px; font-weight: 600; font-size: 0.92rem; transition: transform 0.25s var(--ease), border-color 0.25s; }
 .other:hover { transform: translateY(-4px); border-color: var(--primary); }
 .other-emoji { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, var(--g1), var(--g2)); font-size: 1.3rem; }
+
+/* ───────────────────────── Timeline ───────────────────────── */
+.timeline { position: relative; max-width: 980px; margin-inline: auto; --dot: 44px; --line-x: 21px; }
+.timeline-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--line-x);
+  width: 3px;
+  border-radius: 3px;
+  background: var(--border);
+  overflow: hidden;
+}
+.timeline-line-fill { width: 100%; height: 100%; background: var(--gradient); transform-origin: top; }
+
+.timeline-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; }
+.timeline-item { position: relative; padding-left: calc(var(--dot) + 20px); }
+
+.timeline-dot {
+  position: absolute;
+  top: 18px;
+  left: calc(var(--line-x) + 1.5px - var(--dot) / 2);
+  display: grid;
+  place-items: center;
+  width: var(--dot);
+  height: var(--dot);
+  border-radius: 50%;
+  background: var(--surface);
+  border: 3px solid var(--primary);
+  color: var(--primary);
+  font-size: 1.05rem;
+  z-index: 1;
+  box-shadow: 0 0 0 6px var(--bg-alt);
+}
+.timeline-dot.work { border-color: var(--accent); color: var(--accent); }
+
+.timeline-card { padding: 20px 22px; transition: transform 0.3s var(--ease), box-shadow 0.3s; }
+.timeline-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.timeline-card h3 { font-size: 1.1rem; margin: 10px 0 2px; }
+.timeline-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.timeline-org { font-weight: 600; color: var(--primary); margin-bottom: 8px; }
+.timeline-details { margin: 0; }
+.badge-work { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); }
+
+@media (min-width: 900px) {
+  .timeline { --line-x: calc(50% - 1.5px); }
+  .timeline-list { gap: 12px; }
+  .timeline-item { width: 50%; padding-left: 0; }
+  .timeline-item.left { padding-right: calc(var(--dot) / 2 + 32px); }
+  .timeline-item.right { margin-left: 50%; padding-left: calc(var(--dot) / 2 + 32px); }
+  .timeline-item.left .timeline-dot { left: auto; right: calc(var(--dot) / -2); }
+  .timeline-item.right .timeline-dot { left: calc(var(--dot) / -2); }
+  .timeline-item.left .timeline-card { text-align: right; }
+  .timeline-item.left .timeline-meta { flex-direction: row-reverse; }
+}
+
+/* ───────────────────────── Certifications ───────────────────────── */
+.certs-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.cert-card { overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s var(--ease), box-shadow 0.3s; }
+.cert-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.cert-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 10 / 7;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.cert-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
+.cert-card:hover .cert-thumb img { transform: scale(1.06); }
+.cert-zoom {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(10, 10, 25, 0.55);
+  color: #fff;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.cert-thumb:hover .cert-zoom,
+.cert-thumb:focus-visible .cert-zoom { opacity: 1; }
+.cert-thumb-empty { display: grid; place-items: center; font-size: 3rem; color: var(--primary); cursor: default; }
+
+.cert-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.cert-body .badge { align-self: flex-start; }
+.cert-body h3 { font-size: 1.02rem; margin: 0; flex: 1; }
+.cert-foot { display: flex; justify-content: space-between; align-items: center; }
+.cert-link { display: inline-flex; align-items: center; gap: 4px; color: var(--primary); font-size: 0.88rem; font-weight: 600; }
+.cert-link:hover { text-decoration: underline; }
+
+.achievements-title { text-align: center; font-size: 1.4rem; margin: 56px 0 24px; }
+.achievements { display: grid; gap: 16px; }
+@media (min-width: 800px) { .achievements { grid-template-columns: repeat(3, 1fr); } }
+.achievement { display: flex; gap: 14px; padding: 18px; transition: border-color 0.25s, transform 0.25s var(--ease); }
+.achievement:hover { border-color: var(--primary); transform: translateY(-4px); }
+.achievement h4 { font-size: 1rem; margin: 0 0 4px; }
+.achievement p { margin: 0; }
+.achievement-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--gradient);
+  color: #fff;
+}
