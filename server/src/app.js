@@ -5,6 +5,7 @@ import morgan from 'morgan';
 
 import healthRoutes from './routes/health.js';
 import contactRoutes from './routes/contact.js';
+import cvRoutes from './routes/cv.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 export function createApp() {
@@ -33,6 +34,7 @@ export function createApp() {
   app.get('/', (_req, res) => res.json({ message: 'Portfolio API is running', docs: '/api/health' }));
   app.use('/api/health', healthRoutes);
   app.use('/api/contact', contactRoutes);
+  app.use('/api/cv', cvRoutes);
 
   app.use(notFound);
   app.use(errorHandler);
