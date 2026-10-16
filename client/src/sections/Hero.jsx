@@ -37,7 +37,9 @@ export default function Hero() {
           <span className="gradient-text">{profile.name}</span>
         </motion.h1>
 
-        <motion.p variants={item} className="hero-role" aria-label={profile.roles.join(', ')}>
+        <motion.p variants={item} className="hero-role">
+          {/* Screen readers get the full list once instead of the constantly changing typed text. */}
+          <span className="visually-hidden">{profile.roles.join(', ')}</span>
           <span aria-hidden="true">
             {role}
             <span className="caret" />
