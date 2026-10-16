@@ -29,7 +29,7 @@ export function createApp() {
     })
   );
   app.use(express.json({ limit: '20kb' }));
-  if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
+  if (process.env.NODE_ENV !== 'test') app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
   app.get('/', (_req, res) => res.json({ message: 'Portfolio API is running', docs: '/api/health' }));
   app.use('/api/health', healthRoutes);
