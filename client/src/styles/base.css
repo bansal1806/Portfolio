@@ -151,16 +151,17 @@ button, input, textarea, select { font: inherit; color: inherit; }
 
 .skip-link {
   position: fixed;
-  top: -60px;
+  top: 12px;
+  transform: translateY(-200%);
   left: 16px;
   z-index: 200;
   padding: 10px 16px;
   background: var(--primary);
   color: #fff;
   border-radius: var(--radius-sm);
-  transition: top 0.2s;
+  transition: transform 0.2s;
 }
-.skip-link:focus { top: 12px; }
+.skip-link:focus { transform: none; }
 
 .desktop-only { display: none !important; }
 @media (min-width: 900px) {
