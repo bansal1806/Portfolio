@@ -1,13 +1,17 @@
+import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import Navbar from './Navbar.jsx';
 import Footer from './Footer.jsx';
 import ScrollManager from './ScrollManager.jsx';
+import { warmUpApi } from '../api.js';
 
 export default function Layout() {
   const { pathname } = useLocation();
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 25 });
+
+  useEffect(warmUpApi, []);
 
   return (
     <>

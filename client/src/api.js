@@ -31,3 +31,13 @@ export async function sendContactMessage(payload, { timeout = 45000 } = {}) {
     clearTimeout(timer);
   }
 }
+
+/**
+ * Fire-and-forget request that wakes a sleeping free-tier backend (Render spins down
+ * after inactivity) so the contact form and CV downloads respond quickly later.
+ */
+export function warmUpApi() {
+  fetch(`${API_URL}/api/health`, { cache: 'no-store' }).catch(() => {
+    /* offline or API down — the contact form surfaces errors when used */
+  });
+}
