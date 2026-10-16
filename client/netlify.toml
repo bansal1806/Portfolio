@@ -1,0 +1,10 @@
+# Alternative to Vercel: Netlify settings (base directory = client)
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Serve index.html for every route so React Router deep links work
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

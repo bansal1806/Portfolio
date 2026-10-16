@@ -1,0 +1,29 @@
+# Render Blueprint — deploys the Express API from the /server folder.
+# Dashboard → New → Blueprint → select this repo. Secrets marked `sync: false`
+# are entered in the Render dashboard and never committed.
+services:
+  - type: web
+    name: portfolio-api
+    runtime: node
+    rootDir: server
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: NOTIFY_EMAIL
+        sync: false
