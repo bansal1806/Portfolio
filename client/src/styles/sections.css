@@ -666,36 +666,131 @@
   color: #fff;
 }
 
-/* ───────────────────────── Resume CTA ───────────────────────── */
+/* ───────────────────────── Resume CTA (3D glass card) ─────────────────────────
+   Adapted from a Uiverse.io card by Smit-Prajapati: gradient card + raised glass layer,
+   a stack of glass circles that rise out of the corner, buttons that lift on hover. */
 .resume-section { padding-block: 0 clamp(64px, 10vw, 110px); }
-.resume-card {
+.resume-parent { perspective: 1400px; }
+
+.resume-card3d {
+  --rx: 0deg;
+  --ry: 0deg;
+  --glass-top: rgba(255, 255, 255, 0.9);
+  --glass-bottom: rgba(255, 255, 255, 0.55);
+  --glass-edge: rgba(255, 255, 255, 0.95);
+  --resume-title: #3b0f8c;
+  --resume-text: rgba(46, 16, 101, 0.78);
   position: relative;
-  display: grid;
-  gap: 20px;
-  align-items: center;
-  padding: clamp(24px, 5vw, 40px);
-  border-radius: var(--radius-lg);
-  background:
-    linear-gradient(var(--surface), var(--surface)) padding-box,
-    var(--gradient) border-box;
-  border: 2px solid transparent;
-  box-shadow: var(--shadow-lg);
+  min-height: 300px;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 45%, #06b6d4 100%);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  box-shadow: rgba(60, 20, 140, 0) 40px 50px 25px -40px, rgba(60, 20, 140, 0.25) 0 25px 25px -5px;
 }
-.resume-icon {
+:root[data-theme='dark'] .resume-card3d {
+  --glass-top: rgba(21, 21, 42, 0.92);
+  --glass-bottom: rgba(21, 21, 42, 0.6);
+  --glass-edge: rgba(255, 255, 255, 0.35);
+  --resume-title: #ffffff;
+  --resume-text: rgba(236, 236, 246, 0.78);
+}
+.resume-card3d:hover {
+  transition: transform 0.15s linear, box-shadow 0.5s ease; /* follow the cursor closely */
+  box-shadow: rgba(60, 20, 140, 0.35) 30px 50px 25px -40px, rgba(60, 20, 140, 0.15) 0 25px 30px 0;
+}
+
+.resume-glass {
+  position: absolute;
+  inset: 8px;
+  border-radius: 34px;
+  border-top-right-radius: 260px;
+  background: linear-gradient(0deg, var(--glass-bottom) 0%, var(--glass-top) 100%);
+  border-left: 1px solid var(--glass-edge);
+  border-bottom: 1px solid var(--glass-edge);
+  transform: translate3d(0, 0, 25px);
+  transform-style: preserve-3d;
+}
+
+.resume-content,
+.resume-buttons { position: relative; transform: translate3d(0, 0, 26px); }
+.resume-content { padding: clamp(28px, 5vw, 48px) clamp(24px, 5vw, 48px) 0; max-width: 640px; }
+.resume-eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.resume-content h2 { color: var(--resume-title); font-size: clamp(1.5rem, 3.2vw, 2rem); margin-bottom: 10px; }
+.resume-content p { color: var(--resume-text); margin: 0; }
+
+.resume-buttons {
+  padding: 24px clamp(24px, 5vw, 48px) clamp(28px, 5vw, 44px);
+  transform-style: preserve-3d;
+}
+.resume-buttons .btn {
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out, background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.resume-buttons .btn:nth-child(1) { transition-delay: 0.15s; }
+.resume-buttons .btn:nth-child(2) { transition-delay: 0.3s; }
+.resume-buttons .btn:nth-child(3) { transition-delay: 0.45s; }
+.resume-card3d:hover .resume-buttons .btn { transform: translate3d(0, 0, 40px); box-shadow: rgba(60, 20, 140, 0.25) -5px 20px 14px 0; }
+.resume-card3d:hover .resume-buttons .btn:hover { transform: translate3d(0, 0, 55px); transition-delay: 0s; }
+
+/* Stack of glass circles in the curved corner; each rises higher on hover, one after another */
+.resume-logo { position: absolute; top: 0; right: 0; transform-style: preserve-3d; }
+.resume-circle {
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: rgba(30, 10, 70, 0.25) -10px 10px 20px 0;
+  transition: transform 0.5s ease-in-out;
+}
+.resume-circle.c1 { width: 190px; top: 8px; right: 8px; transform: translate3d(0, 0, 20px); }
+.resume-circle.c2 { width: 156px; top: 12px; right: 12px; transform: translate3d(0, 0, 40px); transition-delay: 0.2s; }
+.resume-circle.c3 { width: 122px; top: 19px; right: 19px; transform: translate3d(0, 0, 60px); transition-delay: 0.4s; }
+.resume-circle.c4 { width: 88px; top: 26px; right: 26px; transform: translate3d(0, 0, 80px); transition-delay: 0.6s; }
+.resume-circle.c5 {
+  width: 56px;
+  top: 34px;
+  right: 34px;
   display: grid;
   place-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
-  background: var(--gradient);
   color: #fff;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate3d(0, 0, 100px);
+  transition-delay: 0.8s;
 }
-.resume-text h2 { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: 6px; }
-.resume-text p { color: var(--text-muted); margin: 0; }
-@media (min-width: 900px) {
-  .resume-card { grid-template-columns: auto 1fr; column-gap: 28px; row-gap: 22px; }
-  .resume-buttons { grid-column: 2; }
+.resume-card3d:hover .resume-circle.c2 { transform: translate3d(0, 0, 60px); }
+.resume-card3d:hover .resume-circle.c3 { transform: translate3d(0, 0, 85px); }
+.resume-card3d:hover .resume-circle.c4 { transform: translate3d(0, 0, 110px); }
+.resume-card3d:hover .resume-circle.c5 { transform: translate3d(0, 0, 135px); }
+
+/* Touch screens: no tilt, but play the circle rise once the card scrolls into view */
+@media (hover: none) {
+  .resume-card3d.in-view .resume-circle.c2 { transform: translate3d(0, 0, 60px); }
+  .resume-card3d.in-view .resume-circle.c3 { transform: translate3d(0, 0, 85px); }
+  .resume-card3d.in-view .resume-circle.c4 { transform: translate3d(0, 0, 110px); }
+  .resume-card3d.in-view .resume-circle.c5 { transform: translate3d(0, 0, 135px); }
+}
+
+@media (max-width: 700px) {
+  .resume-card3d { border-radius: 30px; }
+  .resume-glass { border-radius: 24px; border-top-right-radius: 140px; }
+  .resume-circle.c1 { width: 120px; }
+  .resume-circle.c2 { width: 98px; }
+  .resume-circle.c3 { width: 76px; }
+  .resume-circle.c4 { width: 56px; }
+  .resume-circle.c5 { width: 40px; top: 30px; right: 30px; font-size: 1.1rem; }
+  .resume-content { padding-top: 120px; }
 }
 @media (max-width: 520px) {
   .resume-buttons .btn { flex: 1 1 100%; }
