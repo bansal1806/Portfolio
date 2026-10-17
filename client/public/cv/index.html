@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shourya Bansal - Resume</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            background: #fff;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 35px;
+            font-size: 11.5px;
+            line-height: 1.4;
+            text-align: justify;
+        }
+
+        a {
+            color: #000;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            letter-spacing: 0.3px;
+        }
+
+        /* ═══════════════════════════════════════
+           HEADER
+        ═══════════════════════════════════════ */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            padding-bottom: 14px;
+            margin-bottom: 14px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, #000 0%, #000 40%, transparent 100%);
+        }
+
+        .profile-photo {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center 20%;
+            filter: grayscale(100%) contrast(1.08);
+            border: 2px solid #000;
+            box-shadow: 3px 3px 0px #000;
+            flex-shrink: 0;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 800;
+            color: #000;
+            line-height: 1;
+            letter-spacing: -1.5px;
+            margin-bottom: 2px;
+        }
+
+        .title-role {
+            font-size: 11.5px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .contact-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 12px;
+            font-size: 10.5px;
+            color: #333;
+            align-items: center;
+        }
+
+        .contact-row a {
+            font-weight: 500;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 1px;
+        }
+
+        .contact-row a:hover {
+            border-bottom-color: #000;
+        }
+
+        .contact-row .sep {
+            color: #bbb;
+            font-size: 8px;
+        }
+
+        /* ═══════════════════════════════════════
+           LAYOUT
+        ═══════════════════════════════════════ */
+        .layout {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 24px;
+        }
+
+        .sidebar {
+            border-right: 1px solid #e8e8e8;
+            padding-right: 18px;
+        }
+
+        .main {
+            padding-left: 8px;
+        }
+
+        /* ═══════════════════════════════════════
+           SECTIONS
+        ═══════════════════════════════════════ */
+        .section {
+            margin-bottom: 12px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #000;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-heading::before {
+            content: '';
+            width: 18px;
+            height: 2px;
+            background: #000;
+            flex-shrink: 0;
+        }
+
+        .section-heading::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+
+        /* ═══════════════════════════════════════
+           SUMMARY
+        ═══════════════════════════════════════ */
+        .summary {
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: #2a2a2a;
+            font-weight: 500;
+            padding: 6px 0 6px 14px;
+            border-left: 2.5px solid #000;
+            margin-bottom: 10px;
+        }
+
+        /* ═══════════════════════════════════════
+           EXPERIENCE & PROJECT ITEMS
+        ═══════════════════════════════════════ */
+        .entry {
+            margin-bottom: 8px;
+            padding-left: 12px;
+            border-left: 1.5px solid #ddd;
+            transition: border-color 0.2s;
+        }
+
+        .entry:hover {
+            border-left-color: #000;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .entry-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .entry-title .at-company {
+            font-weight: 400;
+            color: #888;
+            letter-spacing: 0.2px;
+            font-style: italic;
+        }
+
+        .entry-title a {
+            border-bottom: 1px dotted #999;
+        }
+
+        .entry-title a:hover {
+            border-bottom-style: solid;
+            border-bottom-color: #000;
+        }
+
+        .entry-date {
+            font-size: 9.5px;
+            font-weight: 500;
+            color: #888;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .entry-desc {
+            font-size: 10.5px;
+            line-height: 1.45;
+            color: #444;
+            margin-top: 1px;
+        }
+
+        /* ═══════════════════════════════════════
+           SIDEBAR: EDUCATION
+        ═══════════════════════════════════════ */
+        .edu-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .edu-school {
+            font-size: 10.5px;
+            font-style: italic;
+            color: #555;
+        }
+
+        .edu-date {
+            font-size: 9.5px;
+            color: #888;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* ═══════════════════════════════════════
+           SIDEBAR: SKILLS
+        ═══════════════════════════════════════ */
+        .skill-group {
+            margin-bottom: 6px;
+        }
+
+        .skill-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #000;
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .skill-label::before {
+            content: '▪';
+            font-size: 6px;
+        }
+
+        .skill-tags {
+            font-size: 10px;
+            color: #555;
+            line-height: 1.45;
+        }
+
+        /* ═══════════════════════════════════════
+           SIDEBAR: ACHIEVEMENTS
+        ═══════════════════════════════════════ */
+        .achievement-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .achievement-list li {
+            font-size: 10.5px;
+            color: #333;
+            margin-bottom: 3px;
+            padding-left: 12px;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .achievement-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 0;
+            font-size: 5px;
+            top: 5px;
+            color: #000;
+        }
+
+        .achievement-list .ach-date {
+            font-size: 9.5px;
+            color: #999;
+            margin-left: 4px;
+            font-weight: 400;
+        }
+
+        /* ═══════════════════════════════════════
+           PRINT STYLES
+        ═══════════════════════════════════════ */
+        @page {
+            size: A4;
+            margin: 8mm 10mm;
+        }
+
+        @media print {
+            html, body {
+                margin: 0;
+                padding: 0;
+                max-width: 100%;
+                font-size: 11.5px;
+                line-height: 1.45;
+                overflow: visible;
+            }
+
+            .header {
+                gap: 22px;
+                padding-bottom: 16px;
+                margin-bottom: 16px;
+            }
+
+            .profile-photo {
+                width: 95px;
+                height: 95px;
+            }
+
+            .name {
+                font-size: 38px;
+            }
+
+            .title-role {
+                font-size: 11.5px;
+                letter-spacing: 4px;
+                margin-bottom: 8px;
+            }
+
+            .contact-row {
+                font-size: 10.5px;
+                gap: 4px 12px;
+            }
+
+            .layout {
+                grid-template-columns: 240px 1fr;
+                gap: 28px;
+            }
+
+            .sidebar {
+                padding-right: 20px;
+            }
+
+            .main {
+                padding-left: 8px;
+            }
+
+            .section {
+                margin-bottom: 16px;
+            }
+
+            .section-heading {
+                font-size: 14px;
+                letter-spacing: 3px;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+            }
+
+            .summary {
+                font-size: 11.5px;
+                line-height: 1.55;
+                padding: 8px 0 8px 14px;
+                margin-bottom: 14px;
+            }
+
+            .entry {
+                margin-bottom: 10px;
+                padding-left: 12px;
+            }
+
+            .entry-title {
+                font-size: 12px;
+            }
+
+            .entry-date {
+                font-size: 9.5px;
+            }
+
+            .entry-desc {
+                font-size: 10.5px;
+                line-height: 1.5;
+                margin-top: 2px;
+            }
+
+            .edu-title {
+                font-size: 12px;
+            }
+
+            .edu-school {
+                font-size: 10.5px;
+            }
+
+            .edu-date {
+                font-size: 9.5px;
+            }
+
+            .skill-group {
+                margin-bottom: 8px;
+            }
+
+            .skill-label {
+                font-size: 10px;
+                letter-spacing: 1.5px;
+                margin-bottom: 3px;
+            }
+
+            .skill-tags {
+                font-size: 10px;
+                line-height: 1.45;
+            }
+
+            .achievement-list li {
+                font-size: 10.5px;
+                margin-bottom: 4px;
+                padding-left: 12px;
+                line-height: 1.4;
+            }
+
+            .achievement-list li::before {
+                font-size: 5px;
+                top: 5px;
+            }
+
+            .achievement-list .ach-date {
+                font-size: 9.5px;
+            }
+
+            .entry:hover {
+                border-left-color: #ddd;
+            }
+
+            a:hover {
+                letter-spacing: 0;
+            }
+
+            .header::after {
+                background: #000;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="profile.jpg" alt="Shourya Bansal" class="profile-photo">
+        <div class="header-content">
+            <div class="name">Shourya Bansal</div>
+            <div class="title-role">Web Developer</div>
+            <div class="contact-row">
+                <a href="tel:+919376666070">+91 9376666070</a>
+                <span class="sep">◆</span>
+                <a href="mailto:shouryabansal02@gmail.com">shouryabansal02@gmail.com</a>
+                <span class="sep">◆</span>
+                <a href="https://github.com/bansal1806" target="_blank" rel="noopener">GitHub</a>
+                <span class="sep">◆</span>
+                <a href="https://linkedin.com/in/shouryabansal18" target="_blank" rel="noopener">LinkedIn</a>
+                <span class="sep">◆</span>
+                <a href="https://drive.google.com/drive/folders/1f2TnDXEd-9xx8VRbLzsPbZct4EvfvjvT?usp=drive_link" target="_blank" rel="noopener">Certificates</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2-COLUMN LAYOUT -->
+    <div class="layout">
+
+        <!-- ▌ SIDEBAR -->
+        <div class="sidebar">
+
+            <div class="section">
+                <div class="section-heading">Education</div>
+                <div class="edu-title">B.Tech in CS Engineering</div>
+                <div class="edu-school">JK Lakshmipat University, Jaipur</div>
+                <div class="edu-date">2024 – 2028 </div>
+            </div>
+
+            <div class="section">
+                <div class="section-heading">Skills</div>
+
+                <div class="skill-group">
+                    <div class="skill-label">Programming & Scripting</div>
+                    <div class="skill-tags">C, Python, JavaScript, Bash</div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-label">Web Development</div>
+                    <div class="skill-tags">HTML, CSS, Markdown, JSON, React.js, Node.js, Express.js, Tailwind CSS,
+                        Bootstrap, FastAPI</div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-label">Databases</div>
+                    <div class="skill-tags">MySQL, PostgreSQL, SQLite, MongoDB</div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-label">Data Science & AI/ML</div>
+                    <div class="skill-tags">PyTorch, Scikit-learn, NumPy, Pandas, Matplotlib, Plotly, Jupyter, Anaconda
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-label">DevOps & Tools</div>
+                    <div class="skill-tags">Git, GitHub, Vercel, Netlify, Render, GitHub Actions, Postman</div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-label">Soft Skills</div>
+                    <div class="skill-tags">Leadership, Teamwork, Problem-Solving, Public Speaking</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-heading">Achievements</div>
+                <ul class="achievement-list">
+                    <li>State Level Open AI Hackathon <span class="ach-date">Jan 2026</span></li>
+                    <li>Business Pitch B-Plan, IIT Jodhpur <span class="ach-date">Jan 2026</span></li>
+                    <li>Business Darbar, IIT Jodhpur <span class="ach-date">Jan 2026</span></li>
+                    <li>DBMS Certification, Infosys <span class="ach-date">Dec 2025</span></li>
+                    <li>Most Innovative Pitch, PitchFest 2K25 (ICFAI University) <span class="ach-date">Oct 2025</span>
+                    </li>
+                    <li>4th Position, House of Hack (Hackingly) <span class="ach-date">Sep 2025</span></li>
+                    <li>Certified Web Developer, WsCube Tech <span class="ach-date">Jan 2025</span></li>
+                    <li>Gold Medalist, West Zone Archery</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ▌ MAIN CONTENT -->
+        <div class="main">
+
+            <div class="section">
+                <div class="section-heading">Profile</div>
+                <div class="summary">
+                    CSE undergraduate passionate about building scalable, impactful tech products that solve real-world
+                    problems. Experienced in transforming ideas into prototypes, refining them through feedback, and
+                    deploying production-ready solutions. Dedicated to continuous learning and leveraging emerging
+                    technologies to drive meaningful digital transformation.
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-heading">Experience</div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Tech Lead <span class="at-company">@ Vibe</span></span>
+                        <span class="entry-date">Aug 2025 – Present</span>
+                    </div>
+                    <div class="entry-desc">Leading technical development of a hyperlocal social discovery platform.
+                        Architecting privacy-first connections based on skills and interests using modern web stacks.
+                    </div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Tech Lead <span class="at-company">@ Div</span></span>
+                        <span class="entry-date">Oct 2025 – Present</span>
+                    </div>
+                    <div class="entry-desc">Developing a decentralized IP engine converting creative works into liquid
+                        tokens with automated, compliant royalty distribution mechanisms.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Game & Web Developer <span class="at-company">@
+                                Punogames</span></span>
+                        <span class="entry-date">June 2025 – Aug 2025</span>
+                    </div>
+                    <div class="entry-desc">Enhanced immersive gaming experiences by integrating complex game mechanics
+                        with seamless web interfaces.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Software Developer <span class="at-company">@ Kare Kaise</span></span>
+                        <span class="entry-date">Apr 2025 – June 2025</span>
+                    </div>
+                    <div class="entry-desc">Implemented scalable technical solutions and new feature sets to improve
+                        platform performance and user engagement.</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-heading">Projects</div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Vibe</span>
+                        <span class="entry-date">Aug 2025 – Present</span>
+                    </div>
+                    <div class="entry-desc">Rewires campus discovery with a verified, hyperlocal, privacy-first social
+                        layer that intelligently connects students by skills, interests, mood, and intent.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Decentralized IP Tokens</span>
+                        <span class="entry-date">Oct 2025 – Present</span>
+                    </div>
+                    <div class="entry-desc">A decentralized IP engine that turns creative works into liquid tokens with
+                        automated, compliant royalty distribution.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">अBhyaas</span>
+                        <span class="entry-date">Nov 2024 – Present</span>
+                    </div>
+                    <div class="entry-desc">An innovative AI-centric EdTech solution that transforms knowledge into
+                        effective results for competitive practice.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">CloudGuard AI</span>
+                        <span class="entry-date">Mar 2025 – Apr 2025</span>
+                    </div>
+                    <div class="entry-desc">Why Manage Cloud when they can manage themselves.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">FloatChat – AI Platform for Ocean Data</span>
+                        <span class="entry-date">Jul 2025 – Aug 2025</span>
+                    </div>
+                    <div class="entry-desc">(Prototype) Conversational AI for ARGO datasets (temperature, salinity,
+                        currents).</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">DevForge</span>
+                        <span class="entry-date">Dec 2025</span>
+                    </div>
+                    <div class="entry-desc">AI-powered collaborative developer platform with real-time code execution,
+                        multi-language support, and integrated DevOps tooling.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">NexIDE</span>
+                        <span class="entry-date">Feb 2026</span>
+                    </div>
+                    <div class="entry-desc">Browser-based IDE with multi-language execution, file management, and a
+                        modern developer experience built from scratch.</div>
+                </div>
+
+                <div class="entry">
+                    <div class="entry-header">
+                        <span class="entry-title">Nexus URL</span>
+                        <span class="entry-date">Apr 2026</span>
+                    </div>
+                    <div class="entry-desc">High-performance URL shortener with analytics dashboards, custom aliases,
+                        and optimized redirect latency via caching.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
