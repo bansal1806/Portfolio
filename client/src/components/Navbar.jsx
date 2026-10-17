@@ -35,8 +35,6 @@ export default function Navbar() {
   // Close the mobile menu whenever the route or hash changes.
   useEffect(() => setOpen(false), [location.pathname, location.hash]);
 
-  const initials = profile.name.split(' ').map((w) => w[0]).join('');
-
   const renderLinks = () =>
     LINKS.map(({ to, label }, i) => {
       const inView = activeSection === SECTION_IDS[i];
@@ -55,7 +53,7 @@ export default function Navbar() {
     <header className={`navbar${scrolled ? ' scrolled' : ''}`}>
       <nav className="container nav-inner" aria-label="Main">
         <Link to="/" className="brand" aria-label="Home">
-          <span className="brand-mark">{initials}</span>
+          <img src="/images/logo.png" alt="" className="brand-logo" width="44" height="44" />
           <span className="brand-name">{profile.name}</span>
         </Link>
 

@@ -33,17 +33,15 @@
 }
 
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  background: var(--gradient);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  transition: transform 0.3s var(--ease);
 }
+.brand:hover .brand-logo { transform: rotate(-6deg) scale(1.06); }
+/* The signature is dark blue ink — render it white so it stays visible on the dark theme. */
+:root[data-theme='dark'] .brand-logo { filter: brightness(0) invert(1); }
 .brand-name { font-family: var(--font-display); font-size: 1.05rem; }
 
 .nav-links { gap: 4px; }
