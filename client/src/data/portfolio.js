@@ -10,7 +10,7 @@ export const profile = {
   email: 'shouryabansal02@gmail.com',
   location: 'India',
   status: 'Student · Open to internships & fresher roles',
-  photo: '/images/Bansal.png', // replace with /images/profile.jpg
+  photo: '/images/profile.webp', // transparent artistic portrait (blends into both themes)
   socials: {
     github: 'https://github.com/bansal1806',
     linkedin: 'https://www.linkedin.com/in/shourya18',

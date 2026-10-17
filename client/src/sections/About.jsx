@@ -33,7 +33,7 @@ export default function About() {
         <div className="about-grid">
           <Reveal direction="left" className="about-photo-wrap">
             <div className="about-photo">
-              <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="360" height="420" loading="lazy" />
+              <img src={profile.photo} alt={`Portrait of ${profile.name}`} width="760" height="887" loading="lazy" />
             </div>
           </Reveal>
 

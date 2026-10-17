@@ -120,28 +120,38 @@
 }
 
 .about-photo-wrap { display: flex; justify-content: center; }
+/* Transparent "paint splash" portrait: no frame — it floats on the page and a
+   soft brand-coloured glow behind it blends into both light and dark themes. */
 .about-photo {
   position: relative;
-  width: min(340px, 85%);
-  aspect-ratio: 6 / 7;
+  width: min(420px, 92%);
+  aspect-ratio: 760 / 887;
+  isolation: isolate;
 }
 .about-photo::before {
   content: '';
   position: absolute;
-  inset: 0;
-  translate: 18px 18px;
-  border-radius: var(--radius-lg);
-  border: 2px solid var(--primary);
-  transition: translate 0.4s var(--ease);
+  inset: 12% 8% 8%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 40%, color-mix(in srgb, var(--primary) 55%, transparent), transparent 60%),
+    radial-gradient(circle at 70% 65%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 60%);
+  filter: blur(50px);
+  opacity: var(--portrait-glow);
+  transition: opacity 0.4s var(--ease), transform 0.6s var(--ease);
 }
-.about-photo:hover::before { translate: 10px 10px; }
+.about-photo:hover::before { opacity: calc(var(--portrait-glow) + 0.2); transform: scale(1.06); }
 .about-photo img {
   position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  object-fit: contain;
+  animation: portrait-float 7s ease-in-out infinite;
+  filter: drop-shadow(0 18px 30px rgba(40, 20, 90, var(--portrait-shadow)));
+}
+@keyframes portrait-float {
+  50% { transform: translateY(-10px); }
 }
 
 .about-heading { font-size: clamp(1.4rem, 3vw, 1.8rem); margin-bottom: 16px; }
