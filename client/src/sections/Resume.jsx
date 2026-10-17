@@ -10,9 +10,9 @@ export default function Resume() {
           <span className="resume-icon"><FiFileText aria-hidden="true" /></span>
           <div className="resume-text">
             <h2>Grab a copy of my resume</h2>
-            <p>Available as a PDF for quick reading or a Word document if you need to edit it. Both are served straight from my Node.js API.</p>
+            <p>View it online, or download it as a PDF for quick reading or a Word document if you need to edit it. Downloads are served straight from my Node.js API.</p>
           </div>
-          <CVButtons className="resume-buttons" />
+          <CVButtons className="resume-buttons" showOnline />
         </Reveal>
       </div>
     </section>

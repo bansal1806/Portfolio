@@ -7,3 +7,6 @@ export const CV_URLS = {
   pdf: `${API_URL}/api/cv/pdf`,
   docx: `${API_URL}/api/cv/docx`,
 };
+
+// HTML version of the CV, served as a static file from client/public/cv/.
+export const CV_ONLINE_URL = '/cv/index.html';
