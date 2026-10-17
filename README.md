@@ -35,7 +35,7 @@ It has animated sections, dark/light mode, a project showcase with filters, CV d
 - **Frontend:** React 19, React Router 7, Framer Motion, react-icons, Vite
 - **Backend:** Node.js, Express 5, Mongoose, Nodemailer, Helmet, express-rate-limit
 - **Database:** MongoDB Atlas
-- **CV generation:** pdfkit + docx
+- **CV generation:** puppeteer-core (HTML → PDF) + docx
 - **Testing:** node:test, supertest, mongodb-memory-server
 - **Hosting:** Vercel (client) + Render (API)
 
@@ -108,7 +108,7 @@ npm test           # API tests (uses an in-memory MongoDB)
 
 - **Website content:** edit `client/src/data/portfolio.js` (profile, skills, projects, timeline, certificates).
 - **Photo / certificates:** drop images into `client/public/images/` and `client/public/certificates/`, then update their paths in `portfolio.js`.
-- **CV:** edit `server/scripts/resume-data.js`, then run `npm run generate:cv` to rebuild both the PDF and the DOCX.
+- **CV:** the online CV is `client/public/cv/index.html` (served at `/cv/`). The PDF download is that page printed by headless Chrome, and the Word version is built from `server/scripts/resume-data.js`. After editing, keep both in sync and run `npm run generate:cv` (needs Chrome or Edge installed, or set `CHROME_PATH`).
 
 ## Deployment
 
