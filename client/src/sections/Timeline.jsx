@@ -73,6 +73,14 @@ function StepNumber({ value }) {
   );
 }
 
+/** True for light backgrounds (e.g. a logo on white), so the card caption switches to dark text. */
+function isLight(hex) {
+  const m = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex || '');
+  if (!m) return false;
+  const [r, g, b] = m.slice(1).map((h) => parseInt(h, 16));
+  return 0.299 * r + 0.587 * g + 0.114 * b > 160;
+}
+
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -97,10 +105,15 @@ function StepRow({ item, index, rowRef }) {
         </motion.p>
       </div>
 
-      <motion.div className={`step-visual ${item.type}`} {...fadeUp(0.15)} aria-hidden="true">
-        <Icon className="step-visual-icon" />
-        <span className="step-visual-period">{item.period}</span>
-        <span className="step-visual-org">{item.org}</span>
+      <motion.div
+        className={`step-visual ${item.type}${item.image ? ' has-image' : ''}${item.imageFit === 'contain' ? ' is-logo' : ''}${isLight(item.imageBg) ? ' on-light' : ''}`}
+        style={item.imageBg ? { '--visual-bg': item.imageBg } : undefined}
+        {...fadeUp(0.15)}
+      >
+        {item.image && <img className="step-visual-img" src={item.image} alt={item.org} loading="lazy" decoding="async" />}
+        <Icon className="step-visual-icon" aria-hidden="true" />
+        <span className="step-visual-period" aria-hidden="true">{item.period || item.title}</span>
+        <span className="step-visual-org" aria-hidden="true">{item.org}</span>
       </motion.div>
     </li>
   );

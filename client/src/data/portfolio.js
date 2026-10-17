@@ -212,35 +212,45 @@ export const projects = [
   },
 ].map((p) => ({ preview: `/previews/${p.slug}.webp`, ...p }));
 
-// Vertical timeline — `type` is "education" or "work".
+// Journey timeline — `type` is "education" or "work". `image` (in public/images) fills the
+// step's card; logos on a solid background use `imageFit: 'contain'` with a matching `imageBg`.
+// `period` is optional — without it the card shows the role instead.
 export const timeline = [
   {
     type: 'education',
     title: 'B.Tech in Computer Science & Engineering',
-    org: 'Your University Name',
-    period: '2023 – 2027',
-    details: 'Current CGPA: 8.5 / 10. Coursework: Data Structures, DBMS, Operating Systems, Computer Networks, Web Technologies.',
+    org: 'JK Lakshmipat University, Jaipur',
+    period: '2024 – 2028',
+    details: 'Pursuing a B.Tech in Computer Science and Engineering while building products, leading tech teams and taking part in hackathons.',
+    image: '/images/jklu.webp',
   },
   {
     type: 'work',
-    title: 'Web Development Intern',
-    org: 'Company Name',
-    period: 'Jun 2026 – Aug 2026',
-    details: 'Built reusable React components, integrated Express REST endpoints and designed MongoDB schemas with Mongoose validation.',
+    title: 'Founder',
+    org: 'RamantraX',
+    period: null,
+    details: 'Founder of RamantraX — “an unknown variable of innovation”.',
+    image: '/images/ramantra_logo.png',
+    imageFit: 'contain',
+    imageBg: '#000000',
   },
   {
     type: 'education',
     title: 'MERN Stack Development Course',
-    org: 'Course Provider',
-    period: '2026',
-    details: 'Hands-on training in MongoDB, Express, React and Node.js, building and deploying full-stack projects.',
+    org: 'WsCube Tech',
+    period: '2025',
+    details: 'Hands-on training in MongoDB, Express, React and Node.js, building and deploying full-stack projects. Certified Web Developer, WsCube Tech.',
+    image: '/images/WsCube-Tech.webp',
+    imageFit: 'contain',
+    imageBg: '#ffffff',
   },
   {
     type: 'education',
-    title: 'Senior Secondary (Class XII) — PCM',
-    org: 'Your School Name',
-    period: '2021 – 2023',
-    details: 'Physics, Chemistry, Mathematics with Computer Science.',
+    title: 'Senior Secondary (Classes XI & XII)',
+    org: 'Vardhman International School',
+    period: '2022 – 2024',
+    details: 'Completed Classes XI and XII at Vardhman International School.',
+    image: '/images/VIS.webp',
   },
 ];
 
