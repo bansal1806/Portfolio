@@ -2,9 +2,12 @@ import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import ProjectCard from './ProjectCard.jsx';
 
+// Undated projects (year: null) always sort after dated ones.
+const byYear = (dir) => (a, b) => (a.year == null) - (b.year == null) || dir * ((a.year ?? 0) - (b.year ?? 0));
+
 const SORTS = {
-  newest: { label: 'Newest first', fn: (a, b) => b.year - a.year },
-  oldest: { label: 'Oldest first', fn: (a, b) => a.year - b.year },
+  newest: { label: 'Newest first', fn: byYear(-1) },
+  oldest: { label: 'Oldest first', fn: byYear(1) },
   name: { label: 'Name (A–Z)', fn: (a, b) => a.name.localeCompare(b.name) },
 };
 

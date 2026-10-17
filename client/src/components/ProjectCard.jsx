@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowUpRight, FiExternalLink, FiGithub } from 'react-icons/fi';
+import SitePreview from './SitePreview.jsx';
 
 export default function ProjectCard({ project }) {
-  const { slug, name, description, tech, github, live, gradient, emoji, year } = project;
+  const { slug, name, description, tech, github, live, preview, year } = project;
 
   return (
     <motion.article
@@ -15,14 +16,9 @@ export default function ProjectCard({ project }) {
       whileHover={{ y: -8 }}
       className="project-card card"
     >
-      <Link
-        to={`/projects/${slug}`}
-        className="project-cover"
-        style={{ '--g1': gradient[0], '--g2': gradient[1] }}
-        aria-label={`Read more about ${name}`}
-      >
-        <span className="project-emoji" aria-hidden="true">{emoji}</span>
-        <span className="project-year">{year}</span>
+      <Link to={`/projects/${slug}`} className="project-cover" aria-label={`Read more about ${name}`}>
+        <SitePreview url={live} image={preview} title={name} />
+        {year && <span className="project-year">{year}</span>}
       </Link>
 
       <div className="project-body">
@@ -40,11 +36,13 @@ export default function ProjectCard({ project }) {
         </ul>
 
         <div className="project-links">
-          <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
-            <FiGithub aria-hidden="true" /> Code
-          </a>
+          {github && (
+            <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
+              <FiGithub aria-hidden="true" /> Code
+            </a>
+          )}
           <a href={live} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
-            <FiExternalLink aria-hidden="true" /> Live demo
+            <FiExternalLink aria-hidden="true" /> Live site
           </a>
         </div>
       </div>

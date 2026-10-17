@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowLeft, FiCheckCircle, FiExternalLink, FiGithub } from 'react-icons/fi';
 import NotFound from './NotFound.jsx';
+import SitePreview from '../components/SitePreview.jsx';
 import { profile, projects } from '../data/portfolio.js';
 
 export default function ProjectDetail() {
@@ -15,7 +16,7 @@ export default function ProjectDetail() {
 
   if (!project) return <NotFound />;
 
-  const { name, description, highlights, tech, github, live, gradient, emoji, year } = project;
+  const { name, description, highlights = [], tech, github, live, preview, embeddable, year } = project;
   const others = projects.filter((p) => p.slug !== slug).slice(0, 3);
 
   return (
@@ -27,16 +28,18 @@ export default function ProjectDetail() {
 
         <motion.div
           className="detail-cover"
-          style={{ '--g1': gradient[0], '--g2': gradient[1] }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span aria-hidden="true">{emoji}</span>
+          <SitePreview url={live} image={preview} title={name} scroll="manual" live={embeddable} />
+          <p className="muted small detail-cover-note">
+            {embeddable ? 'Live site — interact with it right here.' : 'Scroll inside the preview to explore the full page.'}
+          </p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
-          <p className="muted small">{year}</p>
+          {year && <p className="muted small">{year}</p>}
           <h1 className="detail-title">{name}</h1>
           <p className="detail-desc muted">{description}</p>
 
@@ -44,17 +47,23 @@ export default function ProjectDetail() {
             {tech.map((t) => <li key={t} className="badge">{t}</li>)}
           </ul>
 
-          <h2 className="detail-subtitle">Highlights</h2>
-          <ul className="highlights">
-            {highlights.map((h) => (
-              <li key={h}><FiCheckCircle aria-hidden="true" /> {h}</li>
-            ))}
-          </ul>
+          {highlights.length > 0 && (
+            <>
+              <h2 className="detail-subtitle">Highlights</h2>
+              <ul className="highlights">
+                {highlights.map((h) => (
+                  <li key={h}><FiCheckCircle aria-hidden="true" /> {h}</li>
+                ))}
+              </ul>
+            </>
+          )}
 
           <div className="project-links">
-            <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
-              <FiGithub aria-hidden="true" /> View code on GitHub
-            </a>
+            {github && (
+              <a href={github} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                <FiGithub aria-hidden="true" /> View code on GitHub
+              </a>
+            )}
             <a href={live} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
               <FiExternalLink aria-hidden="true" /> Open live demo
             </a>
@@ -67,7 +76,7 @@ export default function ProjectDetail() {
             <div className="others-list">
               {others.map((p) => (
                 <Link key={p.slug} to={`/projects/${p.slug}`} className="other card">
-                  <span className="other-emoji" style={{ '--g1': p.gradient[0], '--g2': p.gradient[1] }} aria-hidden="true">{p.emoji}</span>
+                  <img className="other-thumb" src={p.preview} alt="" loading="lazy" />
                   <span>{p.name}</span>
                 </Link>
               ))}

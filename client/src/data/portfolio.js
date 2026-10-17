@@ -66,82 +66,147 @@ export const skillGroups = [
 export const proficiencyLabel = (level) =>
   level >= 85 ? 'Advanced' : level >= 70 ? 'Proficient' : level >= 55 ? 'Intermediate' : 'Beginner';
 
-// Projects: min 3. `year` drives "newest" sorting, `tech` drives the filter chips.
+// Projects. `tech` drives the filter chips, `year` the date sort (null = undated, sorted last).
+// `preview` is a full-page screenshot of the live site — refresh them all with
+// `npm run capture:previews` (client folder) after a site changes.
+const GH = 'https://github.com/bansal1806';
+
 export const projects = [
   {
-    slug: 'mern-portfolio',
-    name: 'MERN Portfolio',
+    slug: 'nexide',
+    name: 'NexIDE',
     year: 2026,
     featured: true,
-    gradient: ['#7c3aed', '#06b6d4'],
-    emoji: '🚀',
     description:
-      'This website! A full-stack portfolio with animated sections, dark/light mode, CV downloads served from Express and a contact form that stores messages in MongoDB.',
+      'A browser-based, AI-powered code editor with live code execution, a visual map of your codebase and a Gemini AI pair programmer.',
     highlights: [
-      'React Router SPA with Framer Motion scroll animations and a typewriter hero',
-      'Express REST API serving the CV in both PDF and DOCX formats',
-      'Contact form persisted with Mongoose, with rate limiting and email notifications via Nodemailer',
-      'Deployed with the frontend on Vercel and the API on Render',
+      'Monaco editor core with multi-language execution and file management in the browser',
+      'Visual code map that renders project structure and logic with D3.js',
+      'AI pair programmer powered by Gemini with codebase-aware context',
+      'Local-first workspace synced through Supabase',
     ],
-    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'Framer Motion'],
-    github: 'https://github.com/your-username/portfolio',
-    live: 'https://your-portfolio.vercel.app',
+    tech: ['React', 'Vite', 'Monaco Editor', 'D3.js', 'Gemini AI', 'Supabase'],
+    github: `${GH}/NexIDE`,
+    live: 'https://nex-ide.vercel.app/',
   },
   {
-    slug: 'taskflow',
-    name: 'TaskFlow — Kanban Board',
+    slug: 'invoiceflow',
+    name: 'InvoiceFlow',
     year: 2026,
     featured: true,
-    gradient: ['#f59e0b', '#ef4444'],
-    emoji: '✅',
     description:
-      'A Trello-style task manager with drag-and-drop boards, JWT authentication and per-user workspaces so teams can track work from “To do” to “Done”.',
+      'A full-stack, multi-tenant invoice management platform: create, send and track invoices, automate recurring billing and generate PDFs.',
     highlights: [
-      'Drag-and-drop columns and cards with optimistic UI updates',
-      'JWT auth with protected routes and hashed passwords (bcrypt)',
-      'MongoDB aggregation for board progress statistics',
+      'Multi-tenant architecture so each business manages its own clients, invoices and inventory',
+      'Automated recurring billing with scheduled cron jobs',
+      'Invoice PDF generation and online payments through Razorpay',
+      'Next.js frontend backed by a Node.js/Express API and MongoDB Atlas',
     ],
-    tech: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT'],
-    github: 'https://github.com/your-username/taskflow',
-    live: 'https://taskflow-demo.vercel.app',
+    tech: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'MongoDB', 'Razorpay'],
+    github: `${GH}/INVOICE-FLOW`,
+    live: 'https://invoiceflow-orpin.vercel.app/',
   },
   {
-    slug: 'shopkart',
-    name: 'ShopKart — E-commerce Store',
+    slug: 'dhund',
+    embeddable: true, // site allows iframes → live preview on the detail page
+    name: 'DHUND',
+    year: 2026,
+    featured: true,
+    description:
+      'An AI-powered missing person recovery system that combines multimodal vision analysis, semantic vector search and citizen crowdsourcing in one command center.',
+    highlights: [
+      'Face recognition and multimodal AI vision analysis on uploaded and surveillance images',
+      'Semantic search over case data with pgvector embeddings in Supabase',
+      'Real-time surveillance simulation and crowdsourced sighting reports',
+      'React frontend with a Python FastAPI backend',
+    ],
+    tech: ['React', 'FastAPI', 'Python', 'Supabase', 'pgvector', 'Computer Vision'],
+    github: `${GH}/DHUND`,
+    live: 'https://dhund.vercel.app/',
+  },
+  {
+    slug: 'cloudguard-ai',
+    name: 'CloudGuard AI',
     year: 2025,
     featured: true,
-    gradient: ['#10b981', '#3b82f6'],
-    emoji: '🛒',
     description:
-      'An online store with product search, category filters, a persistent cart and checkout, plus an admin dashboard to manage products and orders.',
+      'A digital-twin platform for multi-cloud management across AWS, Azure and GCP, with AI-powered predictive analytics and autonomous policy evolution.',
     highlights: [
-      'Global cart state with Redux Toolkit, persisted to localStorage',
-      'Admin-only routes for product CRUD and order status updates',
-      'Paginated, filterable product API built with Express and Mongoose',
+      'Digital twin of cloud infrastructure for a single view across AWS, Azure and GCP',
+      'Deep-learning models that predict load and cost trends',
+      'Autonomous policy suggestions and cross-cloud intelligence dashboards',
     ],
-    tech: ['React', 'Redux', 'Node.js', 'Express', 'MongoDB'],
-    github: 'https://github.com/your-username/shopkart',
-    live: 'https://shopkart-demo.vercel.app',
+    tech: ['Next.js', 'TypeScript', 'TensorFlow', 'FastAPI', 'Tailwind CSS', 'Prisma'],
+    github: `${GH}/CloudGuard-AI`,
+    live: 'https://cloud-guard-ai-plum.vercel.app/',
   },
   {
-    slug: 'weatherly',
-    name: 'Weatherly — Weather Dashboard',
-    year: 2025,
+    slug: 'hackjklu',
+    name: 'HackJKLU v5.0',
+    year: 2026,
+    featured: true,
+    description:
+      'The official website for HackJKLU v5.0, a Greek mythology themed hackathon at JK Lakshmipat University, built as an immersive 3D scrolling experience.',
+    highlights: [
+      'Cinematic parallax journey through three realms: Zeus, Poseidon and Hades',
+      'Interactive 3D elements, particle effects and a dome gallery of past events',
+      'Animations with Framer Motion and GSAP, with adaptive quality for slower devices',
+    ],
+    tech: ['Next.js', 'TypeScript', 'Framer Motion', 'GSAP'],
+    github: `${GH}/HackJKLU-v5.0`,
+    live: 'https://www.hackjklu.com/',
+  },
+  {
+    slug: 'ab-creation',
+    embeddable: true, // site allows iframes → live preview on the detail page
+    name: 'AB Creation',
+    year: null,
+    featured: true,
+    description:
+      'An online store for custom apparel and printing, where customers can shop ready-made printed tees or bring their own design.',
+    tech: ['Next.js', 'E-commerce'],
+    live: 'https://ab-creations-web.vercel.app/',
+  },
+  {
+    slug: 'antah',
+    name: 'Antah',
+    year: null,
     featured: false,
-    gradient: ['#0ea5e9', '#6366f1'],
-    emoji: '🌦️',
     description:
-      'A responsive weather dashboard that shows current conditions and a 5-day forecast for any city using the OpenWeather API, with geolocation and saved cities.',
-    highlights: [
-      'Debounced city search with autocomplete',
-      'Geolocation-based weather on first load',
-      'Charts for hourly temperature trends',
-    ],
-    tech: ['React', 'JavaScript', 'REST API', 'CSS'],
-    github: 'https://github.com/your-username/weatherly',
-    live: 'https://weatherly-demo.netlify.app',
+      'A spiritual wellness store for authentic Rudraksha, energized gemstone bracelets and malas, with shopping by Rashi, concern or sacred stone.',
+    tech: ['Shopify', 'E-commerce'],
+    live: 'https://antah.in/',
   },
-];
+  {
+    slug: 'soqo',
+    name: 'SOQO',
+    year: null,
+    featured: false,
+    description:
+      'The storefront for SOQO, an Indian brand of soft, washable leakproof underwear designed to replace daily pantyliners.',
+    tech: ['Shopify', 'E-commerce'],
+    live: 'https://soqo.in/',
+  },
+  {
+    slug: 'exemplar-jewels',
+    name: 'Exemplar Jewels',
+    year: null,
+    featured: false,
+    description: 'An online jewellery store showcasing and selling Exemplar’s jewellery collections.',
+    tech: ['Shopify', 'E-commerce'],
+    live: 'https://exemplarjewels.com/',
+  },
+  {
+    slug: 'in-plain-sight',
+    name: 'In Plain Sight',
+    year: null,
+    featured: false,
+    description:
+      'An e-commerce store for premium hand-pounded spices and cold-pressed oils, made honestly for modern families.',
+    tech: ['Shopify', 'E-commerce'],
+    live: 'https://inplainsight.co.in/',
+  },
+].map((p) => ({ preview: `/previews/${p.slug}.webp`, ...p }));
 
 // Vertical timeline — `type` is "education" or "work".
 export const timeline = [
