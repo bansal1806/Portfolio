@@ -57,22 +57,25 @@ export default function Contact() {
 
   const sending = status.state === 'sending';
 
+  // Floating-label field: the label sits inside the input and rises when focused or filled.
+  // (placeholder=" " lets CSS detect "filled" via :placeholder-shown.)
   const field = (name, label, props = {}) => {
     const Tag = props.rows ? 'textarea' : 'input';
     const id = `contact-${name}`;
     return (
-      <div className={`field${errors[name] ? ' has-error' : ''}`}>
-        <label htmlFor={id}>{label}</label>
+      <div className={`float-field${props.rows ? ' is-area' : ''}${errors[name] ? ' has-error' : ''}`}>
         <Tag
           id={id}
           name={name}
           value={form[name]}
           onChange={onChange}
           disabled={sending}
+          placeholder=" "
           aria-invalid={Boolean(errors[name])}
           aria-describedby={errors[name] ? `${id}-error` : undefined}
           {...props}
         />
+        <label htmlFor={id}>{label}</label>
         {errors[name] && (
           <span id={`${id}-error`} className="field-error" role="alert">{errors[name]}</span>
         )}
@@ -89,10 +92,49 @@ export default function Contact() {
           subtitle="Have an opportunity, a project idea or just want to say hi? My inbox is always open."
         />
 
-        <div className="contact-grid">
-          <Reveal direction="left" className="contact-info">
+        {/* Glass panel adapted from a Uiverse.io form by sameer2malik */}
+        <Reveal className="contact-glass">
+          <form className="contact-form-glass" onSubmit={onSubmit} noValidate>
+            <h3 className="contact-form-title">Send me a message</h3>
+            {field('name', 'Your name', { type: 'text', autoComplete: 'name', maxLength: 80 })}
+            {field('email', 'Email address', { type: 'email', autoComplete: 'email', maxLength: 120 })}
+            {field('message', 'Tell me about your project or opportunity', { rows: 5, maxLength: 2000 })}
+
+            {/* Honeypot: hidden from humans, bots tend to fill it in. */}
+            <div className="visually-hidden" aria-hidden="true">
+              <label htmlFor="contact-website">Website</label>
+              <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={onChange} />
+            </div>
+
+            <button type="submit" className="btn btn-primary submit-btn" disabled={sending}>
+              {sending ? (
+                <><FiLoader className="spin" aria-hidden="true" /> Sending…</>
+              ) : (
+                <><FiSend aria-hidden="true" /> Send message</>
+              )}
+            </button>
+
+            <AnimatePresence>
+              {(status.state === 'success' || status.state === 'error') && (
+                <motion.p
+                  key={status.state}
+                  className={`form-status ${status.state}`}
+                  role="status"
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                >
+                  {status.state === 'success' ? <FiCheckCircle aria-hidden="true" /> : <FiAlertCircle aria-hidden="true" />}
+                  {status.message}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </form>
+
+          <aside className="contact-side">
+            <PaperPlane flying={status.state === 'success'} />
             <h3>Get in touch</h3>
-            <p className="muted">
+            <p>
               I&apos;m currently looking for internships and fresher roles as a MERN stack developer. I usually reply
               within 24 hours.
             </p>
@@ -100,60 +142,47 @@ export default function Contact() {
               <li>
                 <span className="contact-icon"><FiMail aria-hidden="true" /></span>
                 <div>
-                  <span className="muted small">Email</span>
-                  <a href={`mailto:${profile.email}`} className="link">{profile.email}</a>
+                  <span className="small contact-label">Email</span>
+                  <a href={`mailto:${profile.email}`} className="contact-value">{profile.email}</a>
                 </div>
               </li>
               <li>
                 <span className="contact-icon"><FiMapPin aria-hidden="true" /></span>
                 <div>
-                  <span className="muted small">Location</span>
-                  <span>{profile.location}</span>
+                  <span className="small contact-label">Location</span>
+                  <span className="contact-value">{profile.location}</span>
                 </div>
               </li>
             </ul>
-            <SocialLinks />
-          </Reveal>
-
-          <Reveal direction="right" delay={0.1}>
-            <form className="contact-form card" onSubmit={onSubmit} noValidate>
-              {field('name', 'Name', { type: 'text', autoComplete: 'name', placeholder: 'Your name', maxLength: 80 })}
-              {field('email', 'Email', { type: 'email', autoComplete: 'email', placeholder: 'you@example.com', maxLength: 120 })}
-              {field('message', 'Message', { rows: 5, placeholder: 'Tell me about your project or opportunity…', maxLength: 2000 })}
-
-              {/* Honeypot: hidden from humans, bots tend to fill it in. */}
-              <div className="visually-hidden" aria-hidden="true">
-                <label htmlFor="contact-website">Website</label>
-                <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={form.website} onChange={onChange} />
-              </div>
-
-              <button type="submit" className="btn btn-primary submit-btn" disabled={sending}>
-                {sending ? (
-                  <><FiLoader className="spin" aria-hidden="true" /> Sending…</>
-                ) : (
-                  <><FiSend aria-hidden="true" /> Send message</>
-                )}
-              </button>
-
-              <AnimatePresence>
-                {(status.state === 'success' || status.state === 'error') && (
-                  <motion.p
-                    key={status.state}
-                    className={`form-status ${status.state}`}
-                    role="status"
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                  >
-                    {status.state === 'success' ? <FiCheckCircle aria-hidden="true" /> : <FiAlertCircle aria-hidden="true" />}
-                    {status.message}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-            </form>
-          </Reveal>
-        </div>
+            <SocialLinks className="contact-socials" />
+          </aside>
+        </Reveal>
       </div>
     </section>
+  );
+}
+
+/** Paper plane on the orb: bobs gently, and flies off (then glides back) when a message is sent. */
+function PaperPlane({ flying }) {
+  return (
+    <motion.svg
+      className="paper-plane"
+      viewBox="0 0 64 64"
+      aria-hidden="true"
+      animate={
+        flying
+          ? { x: [0, 40, 280, -220, 0], y: [0, -30, -230, 60, 0], rotate: [0, -10, -25, 10, 0], opacity: [1, 1, 0, 0, 1] }
+          : { x: 0, y: [0, -8, 0], rotate: 0, opacity: 1 }
+      }
+      transition={
+        flying
+          ? { duration: 3, times: [0, 0.15, 0.45, 0.5, 1], ease: 'easeInOut' }
+          : { y: { duration: 3.5, repeat: Infinity, ease: 'easeInOut' }, default: { duration: 0.8 } }
+      }
+    >
+      <path d="M4 30 60 6 44 58 32 38Z" fill="#ffffff" />
+      <path d="M32 38 60 6 24 34Z" fill="#c4b5fd" />
+      <path d="M32 38 28 52 24 34Z" fill="#a78bfa" />
+    </motion.svg>
   );
 }
