@@ -1,9 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FiAward, FiExternalLink, FiMaximize2, FiStar, FiX } from 'react-icons/fi';
+import { FiAward, FiExternalLink, FiFolder, FiMaximize2, FiStar, FiX } from 'react-icons/fi';
 import Reveal from '../components/Reveal.jsx';
 import SectionHeading from '../components/SectionHeading.jsx';
-import { achievements, certifications } from '../data/portfolio.js';
+import { achievements, certificateFolders, certifications } from '../data/portfolio.js';
+
+const FILTERS = [
+  { key: 'all', label: 'All' },
+  { key: 'course', label: 'Courses' },
+  { key: 'event', label: 'Hackathons & Events' },
+];
+
+function CertLinks({ links, className = '' }) {
+  return (
+    <div className={`cert-links ${className}`}>
+      {links.map((l) => (
+        <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer" className="cert-link">
+          {l.label} <FiExternalLink aria-hidden="true" />
+        </a>
+      ))}
+    </div>
+  );
+}
 
 function Lightbox({ cert, onClose }) {
   useEffect(() => {
@@ -17,13 +35,7 @@ function Lightbox({ cert, onClose }) {
   }, [onClose]);
 
   return (
-    <motion.div
-      className="modal-backdrop"
-      onClick={onClose}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <motion.div className="modal-backdrop" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <motion.div
         className="modal card"
         role="dialog"
@@ -43,11 +55,7 @@ function Lightbox({ cert, onClose }) {
             <strong>{cert.title}</strong>
             <p className="muted small" style={{ margin: 0 }}>{cert.issuer} · {cert.date}</p>
           </div>
-          {cert.link && (
-            <a href={cert.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
-              <FiExternalLink aria-hidden="true" /> Verify credential
-            </a>
-          )}
+          <CertLinks links={cert.links} />
         </div>
       </motion.div>
     </motion.div>
@@ -56,6 +64,23 @@ function Lightbox({ cert, onClose }) {
 
 export default function Certifications() {
   const [active, setActive] = useState(null);
+  const [filter, setFilter] = useState('all');
+
+  const counts = useMemo(
+    () => ({
+      all: certifications.length,
+      course: certifications.filter((c) => c.category === 'course').length,
+      event: certifications.filter((c) => c.category === 'event').length,
+    }),
+    []
+  );
+  const visible = useMemo(
+    () =>
+      certifications
+        .filter((c) => filter === 'all' || c.category === filter)
+        .sort((a, b) => b.sort.localeCompare(a.sort)),
+    [filter]
+  );
 
   return (
     <section id="certifications" className="section">
@@ -63,43 +88,69 @@ export default function Certifications() {
         <SectionHeading
           eyebrow="Certifications & Achievements"
           title="Learning never stops"
-          subtitle="Courses I've completed and milestones I'm proud of."
+          subtitle="Courses I've completed and the hackathons and events I've taken part in. Click a certificate to see it in full."
         />
 
-        <div className="certs-grid">
-          {certifications.map((c, i) => (
-            <Reveal key={c.title} delay={i * 0.08} className="cert-card card">
-              {c.image ? (
-                <button type="button" className="cert-thumb" onClick={() => setActive(c)} aria-label={`View ${c.title} certificate`}>
-                  <img src={c.image} alt="" loading="lazy" />
-                  <span className="cert-zoom"><FiMaximize2 aria-hidden="true" /> View</span>
-                </button>
-              ) : (
-                <div className="cert-thumb cert-thumb-empty"><FiAward aria-hidden="true" /></div>
-              )}
-              <div className="cert-body">
-                <span className="badge">{c.issuer}</span>
-                <h3>{c.title}</h3>
-                <div className="cert-foot">
-                  <span className="muted small">{c.date}</span>
-                  {c.link && (
-                    <a href={c.link} target="_blank" rel="noopener noreferrer" className="cert-link">
-                      Verify <FiExternalLink aria-hidden="true" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            </Reveal>
+        <div className="cert-filters" role="group" aria-label="Filter certificates">
+          {FILTERS.map((f) => (
+            <button key={f.key} type="button" className="chip" aria-pressed={filter === f.key} onClick={() => setFilter(f.key)}>
+              {f.label} <span className="chip-count">{counts[f.key]}</span>
+            </button>
           ))}
         </div>
 
-        <h3 className="achievements-title">Achievements & hackathons</h3>
+        <motion.div layout className="certs-grid">
+          <AnimatePresence mode="popLayout">
+            {visible.map((c) => (
+              <motion.article
+                key={c.title}
+                layout
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 0.3 }}
+                className="cert-card card"
+              >
+                {c.image ? (
+                  <button type="button" className="cert-thumb" onClick={() => setActive(c)} aria-label={`View ${c.title} certificate`}>
+                    <img src={c.image} alt="" loading="lazy" decoding="async" />
+                    <span className="cert-zoom"><FiMaximize2 aria-hidden="true" /> View</span>
+                  </button>
+                ) : (
+                  <div className="cert-thumb cert-thumb-empty"><FiAward aria-hidden="true" /></div>
+                )}
+                <div className="cert-body">
+                  <span className={`badge${c.category === 'event' ? ' badge-work' : ''}`}>{c.issuer}</span>
+                  <h3>{c.title}</h3>
+                  <p className="cert-kind muted small">{c.kind}</p>
+                  <div className="cert-foot">
+                    <span className="muted small">{c.date}</span>
+                    <CertLinks links={c.links.slice(0, 1)} />
+                  </div>
+                </div>
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+
+        <div className="cert-folders">
+          <a href={certificateFolders.course} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
+            <FiFolder aria-hidden="true" /> All course certificates
+          </a>
+          <a href={certificateFolders.event} target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm">
+            <FiFolder aria-hidden="true" /> All event certificates
+          </a>
+        </div>
+
+        <h3 className="achievements-title">Awards & achievements</h3>
         <div className="achievements">
           {achievements.map((a, i) => (
             <Reveal key={a.title} delay={i * 0.1} className="achievement card">
               <span className="achievement-icon"><FiStar aria-hidden="true" /></span>
               <div>
-                <h4>{a.title} <span className="muted small">· {a.year}</span></h4>
+                <h4>
+                  {a.title} {a.year && <span className="muted small">· {a.year}</span>}
+                </h4>
                 <p className="muted small">{a.detail}</p>
               </div>
             </Reveal>

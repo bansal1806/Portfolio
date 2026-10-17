@@ -22,7 +22,7 @@ export const profile = {
   facts: [
     { label: 'Projects built', value: 10, suffix: '+' },
     { label: 'Technologies', value: 15, suffix: '+' },
-    { label: 'Certifications', value: 4, suffix: '' },
+    { label: 'Certifications', value: 9, suffix: '' },
   ],
 };
 
@@ -254,40 +254,122 @@ export const timeline = [
   },
 ];
 
-// Certificates: `image` is optional (put files in client/public/certificates/).
+// Certificates — images live in public/certificates/, originals in Google Drive:
+//   Courses: https://drive.google.com/drive/folders/1YOZN9HD9dm0i7Ut5x__cEHUYDoPFHuV7
+//   Events:  https://drive.google.com/drive/folders/1aN3G_6IlNdF4v3fAQ2Y8Q3GXWbbrv_le
+// `category` drives the filter tabs, `sort` (YYYY-MM) the order, `links[0]` is the main link.
+const drive = (id) => `https://drive.google.com/file/d/${id}/view`;
+
+export const certificateFolders = {
+  course: 'https://drive.google.com/drive/folders/1YOZN9HD9dm0i7Ut5x__cEHUYDoPFHuV7?usp=sharing',
+  event: 'https://drive.google.com/drive/folders/1aN3G_6IlNdF4v3fAQ2Y8Q3GXWbbrv_le?usp=sharing',
+};
+
 export const certifications = [
   {
-    title: 'Meta Front-End Developer',
-    issuer: 'Coursera',
-    date: '2026',
-    image: '/certificates/sample-certificate.svg',
-    link: 'https://www.coursera.org/',
+    title: 'Red Hat System Administration I (RH124)',
+    issuer: 'Red Hat',
+    category: 'course',
+    kind: 'Attendance · 40 credit hours',
+    date: 'Apr 2026',
+    sort: '2026-04',
+    image: '/certificates/redhat-rh124.webp',
+    links: [
+      { label: 'Verify on Credly', url: 'https://www.credly.com/badges/70285a56-f12a-4032-ac65-d6dc3b25a304' },
+      { label: 'Certificate', url: drive('1buFZMYk6dn-7Fu_4HKQom3Uq3Ty9vQCC') },
+    ],
   },
   {
-    title: 'Programming in Java',
-    issuer: 'NPTEL',
-    date: '2025',
-    image: '/certificates/sample-certificate.svg',
-    link: 'https://nptel.ac.in/',
+    title: 'Pre Hackathon 2026',
+    issuer: 'WsCube Tech × HackJKLU 5.0',
+    category: 'event',
+    kind: 'Participation',
+    date: 'Feb 2026',
+    sort: '2026-02',
+    image: '/certificates/pre-hackathon-2026.webp',
+    links: [{ label: 'Certificate', url: drive('1JKBEdi-mYEBFm_cBWVhsT5amw1J4WFxY') }],
   },
   {
-    title: 'Node.js Essential Training',
-    issuer: 'LinkedIn Learning',
-    date: '2025',
-    image: '/certificates/sample-certificate.svg',
-    link: 'https://www.linkedin.com/learning/',
+    title: 'B-Plan — Prometeo × E-Conclave 2026',
+    issuer: 'IIT Jodhpur',
+    category: 'event',
+    kind: 'Participation · Online round & event',
+    date: 'Jan 2026',
+    sort: '2026-01',
+    image: '/certificates/iitj-bplan.webp',
+    links: [
+      { label: 'Certificate', url: drive('1M1CEYmXWedfOqLV_Hg8ff9JdCHKnsMq5') },
+      { label: 'Online round (Unstop)', url: drive('1HfG337g4elSof9inHA-gyZmRXYyZfQcE') },
+    ],
   },
   {
-    title: 'MongoDB Basics',
-    issuer: 'MongoDB University',
-    date: '2025',
-    image: '/certificates/sample-certificate.svg',
-    link: 'https://learn.mongodb.com/',
+    title: 'Business Darbar — Prometeo × E-Conclave 2026',
+    issuer: 'IIT Jodhpur',
+    category: 'event',
+    kind: 'Participation · Pitch deck & event',
+    date: 'Jan 2026',
+    sort: '2026-01',
+    image: '/certificates/iitj-business-darbar.webp',
+    links: [
+      { label: 'Certificate', url: drive('1RrZp98FQfYx0g8JIWnj6oXNJ6PT8TGxY') },
+      { label: 'Pitch deck round (Unstop)', url: drive('1SSldkbLY49mZLgzGIBQsWewam3zwovtF') },
+    ],
+  },
+  {
+    title: 'OpenAI Academy × NxtWave Regional Buildathon — Rajasthan',
+    issuer: 'OpenAI Academy × NxtWave',
+    category: 'event',
+    kind: 'Participation · 2-day buildathon',
+    date: 'Jan 2026',
+    sort: '2026-01',
+    image: '/certificates/openai-buildathon.webp',
+    links: [{ label: 'Certificate', url: drive('1TgNwfyV8x0HTrtG_YzQguHmKj8sMAh8h') }],
+  },
+  {
+    title: 'Database Management System — Part 1',
+    issuer: 'Infosys Springboard',
+    category: 'course',
+    kind: 'Course completion',
+    date: 'Nov 2025',
+    sort: '2025-11',
+    image: '/certificates/infosys-dbms.webp',
+    links: [{ label: 'Certificate', url: drive('1Stj73bbx-1nBNReqpJbs-bVO2U45jeDE') }],
+  },
+  {
+    title: 'Generative AI Mastery Workshop',
+    issuer: 'OpenAI Academy × NxtWave',
+    category: 'event',
+    kind: 'Appreciation · GenAI Buildathon',
+    date: 'Sep 2025',
+    sort: '2025-09',
+    image: '/certificates/openai-genai-workshop.webp',
+    links: [{ label: 'Certificate', url: drive('1QEYKtUqerG196rdoT88mTLIdXO8Dyfpc') }],
+  },
+  {
+    title: 'House of Hack (Edition II) — 24-Hour Hackathon',
+    issuer: 'Hackingly · J Startup House, Jaipur',
+    category: 'event',
+    kind: 'Participation · Team Code Pioneers',
+    date: 'Sep 2025',
+    sort: '2025-09',
+    image: '/certificates/house-of-hack.webp',
+    links: [{ label: 'Certificate', url: drive('19FStniXjmribIpdvis3_VDYlO8AKJp_4') }],
+  },
+  {
+    title: 'MERN Stack Web Development (7 months)',
+    issuer: 'WsCube Tech',
+    category: 'course',
+    kind: 'Course completion · Grade A',
+    date: 'Jun 2024 – Jan 2025',
+    sort: '2025-01',
+    image: '/certificates/wscube-mern.webp',
+    links: [{ label: 'Certificate', url: drive('1o75a5-U7PdB3vfj6e1lkZLTBbXnwgAjs') }],
   },
 ];
 
+// Awards from the CV that aren't covered by a certificate card above.
 export const achievements = [
-  { title: 'Hackathon Participant', detail: 'Built a working MERN prototype in 24 hours at a college hackathon.', year: '2025' },
-  { title: 'Top Performer — Coding Contest', detail: 'Ranked in the top 10% in an inter-college coding competition.', year: '2025' },
-  { title: 'Open Source Contributor', detail: 'Contributed bug fixes and documentation to open-source repositories.', year: '2026' },
+  { title: '4th Position — House of Hack', detail: '24-hour House of Hack (Edition II) hackathon by Hackingly, Jaipur.', year: 'Sep 2025' },
+  { title: 'Most Innovative Pitch — PitchFest 2K25', detail: 'Awarded at PitchFest 2K25, ICFAI University.', year: 'Oct 2025' },
+  { title: 'Gold Medalist — West Zone Archery', detail: 'Gold medal in archery at the West Zone level.', year: '' },
 ];
