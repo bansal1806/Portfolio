@@ -27,38 +27,39 @@ export const profile = {
 };
 
 // level: 0–100. Shown as animated bars with a proficiency tooltip on hover.
+// logo: key into SKILL_LOGOS (sections/Skills.jsx) — the top 3 per group appear on the card art.
 export const skillGroups = [
   {
     category: 'Frontend',
     icon: 'layout',
     skills: [
-      { name: 'React.js', level: 85 },
-      { name: 'JavaScript (ES6+)', level: 85 },
-      { name: 'HTML5 & CSS3', level: 90 },
-      { name: 'Tailwind CSS', level: 75 },
-      { name: 'Framer Motion', level: 65 },
+      { name: 'React.js', logo: 'react', level: 85 },
+      { name: 'JavaScript (ES6+)', logo: 'javascript', level: 85 },
+      { name: 'HTML5 & CSS3', logo: 'html', level: 90 },
+      { name: 'Tailwind CSS', logo: 'tailwind', level: 75 },
+      { name: 'Framer Motion', logo: 'framer', level: 65 },
     ],
   },
   {
     category: 'Backend',
     icon: 'server',
     skills: [
-      { name: 'Node.js', level: 80 },
-      { name: 'Express.js', level: 80 },
-      { name: 'MongoDB & Mongoose', level: 75 },
-      { name: 'REST API Design', level: 80 },
-      { name: 'JWT Authentication', level: 70 },
+      { name: 'Node.js', logo: 'node', level: 80 },
+      { name: 'Express.js', logo: 'express', level: 80 },
+      { name: 'MongoDB & Mongoose', logo: 'mongodb', level: 75 },
+      { name: 'REST API Design', logo: 'api', level: 80 },
+      { name: 'JWT Authentication', logo: 'jwt', level: 70 },
     ],
   },
   {
     category: 'Tools & Technologies',
     icon: 'tool',
     skills: [
-      { name: 'Git & GitHub', level: 85 },
-      { name: 'Postman', level: 80 },
-      { name: 'VS Code', level: 90 },
-      { name: 'Vercel / Render', level: 70 },
-      { name: 'Figma', level: 55 },
+      { name: 'Git & GitHub', logo: 'git', level: 85 },
+      { name: 'Postman', logo: 'postman', level: 80 },
+      { name: 'VS Code', logo: 'vscode', level: 90 },
+      { name: 'Vercel / Render', logo: 'vercel', level: 70 },
+      { name: 'Figma', logo: 'figma', level: 55 },
     ],
   },
 ];

@@ -1,11 +1,46 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { FiLayout, FiServer, FiTool } from 'react-icons/fi';
+import {
+  SiReact, SiJavascript, SiHtml5, SiTailwindcss, SiFramer, SiNodedotjs, SiExpress, SiMongodb,
+  SiJsonwebtokens, SiGit, SiPostman, SiVercel, SiFigma,
+} from 'react-icons/si';
+import { VscVscode } from 'react-icons/vsc';
+import { TbApi } from 'react-icons/tb';
 import Reveal from '../components/Reveal.jsx';
 import SectionHeading from '../components/SectionHeading.jsx';
 import { skillGroups, proficiencyLabel } from '../data/portfolio.js';
 
 const ICONS = { layout: FiLayout, server: FiServer, tool: FiTool };
+
+const SKILL_LOGOS = {
+  react: SiReact, javascript: SiJavascript, html: SiHtml5, tailwind: SiTailwindcss, framer: SiFramer,
+  node: SiNodedotjs, express: SiExpress, mongodb: SiMongodb, api: TbApi, jwt: SiJsonwebtokens,
+  git: SiGit, postman: SiPostman, vscode: VscVscode, vercel: SiVercel, figma: SiFigma,
+};
+
+/**
+ * Decorative card header (adapted from a Uiverse.io card by Smit-Prajapati): a gradient panel whose
+ * category icon glides to the corner on hover while three glass layers slide in from the
+ * bottom-left, each carrying the logo of one of the group's strongest skills.
+ */
+function SkillArt({ icon: Icon, skills }) {
+  const top = [...skills].sort((a, b) => b.level - a.level).filter((s) => SKILL_LOGOS[s.logo]).slice(0, 3);
+  return (
+    <div className="skill-art" aria-hidden="true">
+      <span className="art-logo"><Icon /></span>
+      {top.map((s, i) => {
+        const Logo = SKILL_LOGOS[s.logo];
+        return (
+          <span key={s.name} className={`art-box art-box${i + 1}`}>
+            <span className="art-icon" title={s.name}><Logo /></span>
+          </span>
+        );
+      })}
+      <span className="art-box art-box4" />
+    </div>
+  );
+}
 
 function RadialProgress({ value, inView }) {
   const r = 26;
@@ -66,10 +101,10 @@ function SkillCard({ group, index }) {
   const avg = Math.round(group.skills.reduce((s, k) => s + k.level, 0) / group.skills.length);
 
   return (
-    <Reveal delay={index * 0.12} className="skill-card card">
-      <div ref={ref}>
+    <Reveal delay={index * 0.12} className={`skill-card card art-${index % 3}${inView ? ' in-view' : ''}`}>
+      <SkillArt icon={Icon} skills={group.skills} />
+      <div ref={ref} className="skill-card-body">
         <div className="skill-card-head">
-          <span className="skill-icon"><Icon aria-hidden="true" /></span>
           <h3>{group.category}</h3>
           <RadialProgress value={avg} inView={inView} />
         </div>
