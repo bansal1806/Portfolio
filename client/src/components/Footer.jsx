@@ -10,8 +10,8 @@ export default function Footer() {
         <div>
           <p className="footer-name">{profile.name}</p>
           <p className="muted small">
-            © {new Date().getFullYear()} · Built with React, Express, MongoDB & Node.js
-          </p>
+            © {new Date().getFullYear()} · Built with Love ❤️ & Passion
+            </p>
         </div>
         <SocialLinks />
         <Link to="/#home" className="icon-btn" aria-label="Back to top" title="Back to top">
