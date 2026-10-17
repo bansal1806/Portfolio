@@ -41,3 +41,18 @@ export function warmUpApi() {
     /* offline or API down — the contact form surfaces errors when used */
   });
 }
+
+/**
+ * Asks the API whether `url` may be shown in an iframe on this site (browsers can't tell a
+ * page that directly — a blocked frame just renders an error page). Resolves to a boolean.
+ */
+export async function checkEmbeddable(url) {
+  try {
+    const query = new URLSearchParams({ url, origin: window.location.origin });
+    const res = await fetch(`${API_URL}/api/embed-check?${query}`);
+    const data = await res.json();
+    return Boolean(data.embeddable);
+  } catch {
+    return false;
+  }
+}

@@ -142,6 +142,9 @@ export const projects = [
   },
   {
     slug: 'hackjklu',
+    // Card runs the real site. Requires hackjklu.com to allow framing from this portfolio
+    // (frame-ancestors in its vercel.json) — otherwise the browser blocks the iframe.
+    liveCard: true,
     name: 'HackJKLU v5.0',
     year: 2026,
     featured: true,

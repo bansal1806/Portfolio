@@ -77,6 +77,7 @@ portfolio/
 | `GET` | `/api/cv` | Lists available CV formats |
 | `GET` | `/api/cv/pdf` | Downloads the CV as PDF |
 | `GET` | `/api/cv/docx` | Downloads the CV as Word document |
+| `GET` | `/api/embed-check?url=&origin=` | Whether an allowlisted project site may be shown live in an iframe on `origin` (reads its `X-Frame-Options` / CSP `frame-ancestors`) |
 
 ## Running locally
 

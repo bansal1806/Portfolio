@@ -4,7 +4,7 @@ import { FiArrowUpRight, FiExternalLink, FiGithub } from 'react-icons/fi';
 import SitePreview from './SitePreview.jsx';
 
 export default function ProjectCard({ project }) {
-  const { slug, name, description, tech, github, live, preview, year } = project;
+  const { slug, name, description, tech, github, live, preview, liveCard, year } = project;
 
   return (
     <motion.article
@@ -17,7 +17,7 @@ export default function ProjectCard({ project }) {
       className="project-card card"
     >
       <Link to={`/projects/${slug}`} className="project-cover" aria-label={`Read more about ${name}`}>
-        <SitePreview url={live} image={preview} title={name} />
+        <SitePreview url={live} image={preview} title={name} liveCard={liveCard} />
         {year && <span className="project-year">{year}</span>}
       </Link>
 
