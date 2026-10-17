@@ -94,6 +94,16 @@ describe('POST /api/contact', () => {
   });
 });
 
+describe('GET /api/embed-check', () => {
+  it('rejects sites that are not on the allowlist', async () => {
+    await request(app).get('/api/embed-check').query({ url: 'https://example.com/', origin: 'https://portfolio.vercel.app' }).expect(400);
+  });
+
+  it('rejects malformed parameters', async () => {
+    await request(app).get('/api/embed-check').query({ url: 'nope' }).expect(400);
+  });
+});
+
 describe('Errors and CORS', () => {
   it('returns JSON 404 for unknown routes', async () => {
     const res = await request(app).get('/api/does-not-exist').expect(404);
