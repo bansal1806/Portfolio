@@ -113,6 +113,37 @@
   .hero-cta .btn { flex: 1 1 100%; }
 }
 
+/* Signature that writes itself (components/Signature.jsx) */
+.signature {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.signature svg { display: block; width: 100%; height: auto; overflow: visible; }
+.signature-tip {
+  fill: #fff;
+  filter: drop-shadow(0 0 10px var(--accent)) drop-shadow(0 0 22px var(--primary));
+}
+.hero-signature {
+  width: min(260px, 70%);
+  margin-top: 26px;
+  filter: drop-shadow(0 10px 30px rgba(124, 58, 237, 0.25));
+}
+@media (min-width: 1024px) {
+  /* Desktop: the empty right half of the hero */
+  .hero-signature {
+    position: absolute;
+    top: 50%;
+    right: max(4vw, calc((100vw - var(--container)) / 2));
+    width: min(440px, 34vw);
+    margin: 0;
+    translate: 0 -46%;
+  }
+}
+
 /* ───────────────────────── About ───────────────────────── */
 .about-grid { display: grid; gap: 48px; align-items: center; }
 @media (min-width: 900px) {

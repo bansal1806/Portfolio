@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowRight, FiChevronDown } from 'react-icons/fi';
@@ -5,6 +6,9 @@ import useTypewriter from '../hooks/useTypewriter.js';
 import CVButtons from '../components/CVButtons.jsx';
 import SocialLinks from '../components/SocialLinks.jsx';
 import { profile } from '../data/portfolio.js';
+
+// Loaded separately: the signature data is ~34 KB and only starts drawing ~1s after load.
+const Signature = lazy(() => import('../components/Signature.jsx'));
 
 const container = {
   hidden: {},
@@ -58,6 +62,10 @@ export default function Hero() {
         <motion.div variants={item}>
           <SocialLinks />
         </motion.div>
+
+        <Suspense fallback={null}>
+          <Signature className="hero-signature" />
+        </Suspense>
       </motion.div>
 
       <a href="#about" className="scroll-cue" aria-label="Scroll to About section">
