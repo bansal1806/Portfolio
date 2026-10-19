@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowRight, FiChevronDown } from 'react-icons/fi';
@@ -21,6 +21,15 @@ const item = {
 
 export default function Hero() {
   const role = useTypewriter(profile.roles);
+  const [scrolled, setScrolled] = useState(false);
+
+  // The scroll hint fades away once the visitor starts scrolling (and returns at the top).
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <section id="home" className="hero">
@@ -68,8 +77,17 @@ export default function Hero() {
         </Suspense>
       </motion.div>
 
-      <a href="#about" className="scroll-cue" aria-label="Scroll to About section">
-        <FiChevronDown />
+      <a href="#about" className={`scroll-cue${scrolled ? ' is-hidden' : ''}`} aria-label="Scroll to explore — go to the About section">
+        {/* Mouse with a rolling wheel on pointer devices; bouncing chevrons on touch screens (see CSS) */}
+        <span className="scroll-mouse" aria-hidden="true">
+          <span className="scroll-wheel" />
+        </span>
+        <span className="scroll-chevrons" aria-hidden="true">
+          <FiChevronDown />
+          <FiChevronDown />
+        </span>
+        <span className="scroll-label scroll-label-mouse" aria-hidden="true">Scroll to explore</span>
+        <span className="scroll-label scroll-label-touch" aria-hidden="true">Swipe to explore</span>
       </a>
     </section>
   );
