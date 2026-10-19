@@ -70,7 +70,10 @@ html {
   scroll-padding-top: calc(var(--nav-h) + 12px);
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;
+  /* Hide the page scrollbar (scrolling still works; the top progress bar shows position) */
+  scrollbar-width: none;
 }
+html::-webkit-scrollbar { display: none; }
 
 body {
   margin: 0;
