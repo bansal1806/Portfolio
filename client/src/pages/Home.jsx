@@ -12,6 +12,8 @@ import { profile } from '../data/portfolio.js';
 
 // Section ids, in order — used for the stacking anchors (nav links, scroll-spy).
 const SECTION_IDS = ['home', 'about', 'skills', 'projects', 'journey', 'certifications', 'resume', 'contact'];
+// How each section leaves as the next page slides over it (see EFFECTS in StackSections).
+const SECTION_EFFECTS = ['zoom', 'stack', 'tilt', 'swipe', 'past', 'pile', 'fold', null];
 
 export default function Home() {
   useEffect(() => {
@@ -19,7 +21,7 @@ export default function Home() {
   }, []);
 
   return (
-    <StackSections ids={SECTION_IDS}>
+    <StackSections ids={SECTION_IDS} effects={SECTION_EFFECTS}>
       <Hero />
       <About />
       <Skills />
