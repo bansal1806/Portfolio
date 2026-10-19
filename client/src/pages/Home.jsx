@@ -7,7 +7,11 @@ import Timeline from '../sections/Timeline.jsx';
 import Certifications from '../sections/Certifications.jsx';
 import Resume from '../sections/Resume.jsx';
 import Contact from '../sections/Contact.jsx';
+import StackSections from '../components/StackSections.jsx';
 import { profile } from '../data/portfolio.js';
+
+// Section ids, in order — used for the stacking anchors (nav links, scroll-spy).
+const SECTION_IDS = ['home', 'about', 'skills', 'projects', 'journey', 'certifications', 'resume', 'contact'];
 
 export default function Home() {
   useEffect(() => {
@@ -15,7 +19,7 @@ export default function Home() {
   }, []);
 
   return (
-    <>
+    <StackSections ids={SECTION_IDS}>
       <Hero />
       <About />
       <Skills />
@@ -24,6 +28,6 @@ export default function Home() {
       <Certifications />
       <Resume />
       <Contact />
-    </>
+    </StackSections>
   );
 }
