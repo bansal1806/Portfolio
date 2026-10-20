@@ -167,14 +167,15 @@
 
 /* ───────────────────────── Stacking pages (components/StackSections.jsx) ─────────────────────────
    Each section is sticky; the next one slides over it while it shrinks back, dims and rounds.
-   Each section has its own exit effect; --veil is the dimming written per frame. */
+   --cover (0 → 1) is written by the component as the next section slides over this one. */
 .stack { position: relative; }
 .stack-anchor { display: block; height: 0; }
 .stack-item {
-  --veil: 0;
+  --cover: 0;
   position: sticky;
   top: 0; /* replaced at runtime: tall sections pin at (viewport − height) */
-  /* transform / filter / opacity / radius are set inline per section effect (see component) */
+  /* scale is set inline only while covered (see component) */
+  border-radius: calc(var(--cover) * 32px);
   overflow: clip;
   box-shadow: 0 -24px 48px -24px rgba(20, 10, 50, 0.35); /* depth on the edge that slides over */
 }
@@ -185,7 +186,7 @@
   inset: 0;
   z-index: 50;
   background: #05050f;
-  opacity: var(--veil);
+  opacity: calc(var(--cover) * 0.55);
   pointer-events: none;
 }
 /* Every page needs an opaque background so the one underneath doesn't show through */
