@@ -13,10 +13,7 @@ export default function ScrollManager() {
     // Defer so the target section has rendered after a route change and the
     // mobile menu has started collapsing (which would otherwise cancel the scroll).
     const id = setTimeout(() => {
-      // Stacked sections stay pinned on screen, so scroll to their anchor marker (natural position).
-      const id = hash.slice(1);
-      const target = document.querySelector(`[data-anchor="${CSS.escape(id)}"]`) ?? document.getElementById(id);
-      target?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth' });
     }, 60);
     return () => clearTimeout(id);
   }, [pathname, hash]);

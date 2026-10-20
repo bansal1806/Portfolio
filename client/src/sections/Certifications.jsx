@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FiAward, FiExternalLink, FiFolder, FiMaximize2, FiStar, FiX } from 'react-icons/fi';
 import Reveal from '../components/Reveal.jsx';
@@ -159,12 +158,7 @@ export default function Certifications() {
         </div>
       </div>
 
-      {/* Portal to <body>: the section may be transformed by the page stacking effect,
-          which would otherwise trap this fixed overlay inside it. */}
-      {createPortal(
-        <AnimatePresence>{active && <Lightbox cert={active} onClose={() => setActive(null)} />}</AnimatePresence>,
-        document.body
-      )}
+      <AnimatePresence>{active && <Lightbox cert={active} onClose={() => setActive(null)} />}</AnimatePresence>
     </section>
   );
 }
