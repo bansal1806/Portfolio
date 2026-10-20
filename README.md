@@ -5,8 +5,8 @@ It has animated sections, dark/light mode, a project showcase with filters, CV d
 
 | | Link |
 |---|---|
-| 🌐 Live site (Vercel) | https://your-portfolio.vercel.app |
-| ⚙️ API health check | https://your-portfolio.vercel.app/api/health |
+| 🌐 Live site (Vercel) | https://portfolio-wine-one-bp4urqcujf.vercel.app/ |
+| ⚙️ API health check | https://portfolio-wine-one-bp4urqcujf.vercel.app/api/health |
 
 <p align="center">
   <img src="docs/screenshot-dark.png" alt="Desktop, dark mode" width="72%" />
