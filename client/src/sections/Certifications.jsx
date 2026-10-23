@@ -380,13 +380,14 @@ export default function Certifications() {
         <h3 className="achievements-title">Awards & achievements</h3>
         <div className="achievements">
           {achievements.map((a, i) => (
-            <Reveal key={a.title} delay={i * 0.1} className="achievement card">
-              <span className="achievement-icon"><FiStar aria-hidden="true" /></span>
-              <div>
-                <h4>
-                  {a.title} {a.year && <span className="muted small">· {a.year}</span>}
-                </h4>
-                <p className="muted small">{a.detail}</p>
+            // Text sits on a leather plaque image (public/images/achievement-plaque.webp)
+            <Reveal key={a.title} delay={i * 0.1} className="plaque">
+              <div className="plaque-text">
+                <h4 className="plaque-title">{a.title}</h4>
+                <p className="plaque-detail">
+                  {a.detail}
+                  {a.year && <span className="plaque-year"> · {a.year}</span>}
+                </p>
               </div>
             </Reveal>
           ))}

@@ -397,7 +397,6 @@ export const certifications = [
 
 // Awards from the CV that aren't covered by a certificate card above.
 export const achievements = [
-  { title: '4th Position — House of Hack', detail: '24-hour House of Hack (Edition II) hackathon by Hackingly, Jaipur.', year: 'Sep 2025' },
   { title: 'Most Innovative Pitch — PitchFest 2K25', detail: 'Awarded at PitchFest 2K25, ICFAI University.', year: 'Oct 2025' },
   { title: 'Gold Medalist — West Zone Archery', detail: 'Gold medal in archery at the West Zone level.', year: '' },
 ];
