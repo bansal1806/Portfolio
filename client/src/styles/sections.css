@@ -774,50 +774,8 @@
 }
 
 /* ───────────────────────── Certifications ───────────────────────── */
-.certs-grid { display: grid; gap: 22px; }
-@media (min-width: 600px) { .certs-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 1024px) { .certs-grid { grid-template-columns: repeat(3, 1fr); } }
-.cert-card { overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s var(--ease), box-shadow 0.3s; }
-.cert-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-
-.cert-thumb {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 10 / 7;
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface-2);
-  overflow: hidden;
-  cursor: zoom-in;
-}
-.cert-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s var(--ease); }
-.cert-card:hover .cert-thumb img { transform: scale(1.06); }
-.cert-zoom {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  background: rgba(10, 10, 25, 0.55);
-  color: #fff;
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-.cert-thumb:hover .cert-zoom,
-.cert-thumb:focus-visible .cert-zoom { opacity: 1; }
-.cert-thumb-empty { display: grid; place-items: center; font-size: 3rem; color: var(--primary); cursor: default; }
-
-.cert-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-.cert-body .badge { align-self: flex-start; }
-.cert-body h3 { font-size: 1.02rem; margin: 0; flex: 1; }
-.cert-foot { display: flex; justify-content: space-between; align-items: center; }
 .cert-link { display: inline-flex; align-items: center; gap: 4px; color: var(--primary); font-size: 0.88rem; font-weight: 600; }
 .cert-links { display: flex; flex-wrap: wrap; gap: 6px 14px; }
-.cert-kind { margin: -2px 0 0; }
 .cert-filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 26px; }
 .chip-count {
   display: inline-grid;
@@ -834,9 +792,183 @@
 }
 .chip[aria-pressed='true'] .chip-count { background: rgba(255, 255, 255, 0.25); color: #fff; }
 .cert-folders { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; }
-.cert-thumb img { object-position: top; }
 .modal-caption .cert-links { justify-content: flex-end; }
 .cert-link:hover { text-decoration: underline; }
+
+/* ── Certificate book ────────────────────────────────────────────────────────
+   Sheets hinge on the spine. Perspective sits on .book-inner (no preserve-3d there),
+   so each sheet is drawn in 3D but the sheets still stack by z-index. */
+.book-wrap { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.book {
+  --leather: #6b3420;
+  --gold-1: #f6e2a0;
+  --gold-2: #c99a3e;
+  --gold-3: #8a6420;
+  --paper: #fbf6ea;
+  --paper-edge: #dccfb2;
+  --ink: #2d2416;
+  --ink-muted: #6e624b;
+  --turn: 0.9s;
+  position: relative;
+  width: calc(var(--pw) * 2);
+  height: var(--ph);
+  margin: 28px 0 22px;
+  touch-action: pan-y;
+}
+:root[data-theme='dark'] .book { --paper: #efe7d6; --paper-edge: #c9ba98; }
+.book.single { width: var(--pw); left: -10px; } /* balance the overhang + shadow on the right */
+.book-inner { position: absolute; inset: 0; perspective: 2400px; transition: transform var(--turn) var(--ease); }
+
+/* Leather: warm highlight, darker lower edge, fine grain */
+.board,
+.sheet.cover .face.back {
+  background-color: var(--leather);
+  background-image:
+    radial-gradient(120% 90% at 28% 18%, rgba(255, 214, 170, 0.2), transparent 55%),
+    radial-gradient(90% 80% at 80% 105%, rgba(0, 0, 0, 0.4), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Boards: the inside of the front and back covers, a little larger than the pages.
+   Their stacked shadows read as the block of pages and the cover's thickness. */
+.board { position: absolute; top: -8px; width: calc(var(--pw) + 10px); height: calc(var(--ph) + 16px); }
+.board.right {
+  left: 50%;
+  border-radius: 3px 12px 12px 3px;
+  box-shadow: 2px 2px 0 var(--paper-edge), 4px 4px 0 var(--paper), 6px 6px 0 var(--paper-edge), 9px 9px 0 #3b1c0f, 0 34px 50px -16px rgba(20, 10, 0, 0.55);
+}
+.board.left {
+  right: 50%;
+  border-radius: 12px 3px 3px 12px;
+  box-shadow: -2px 2px 0 var(--paper-edge), -4px 4px 0 var(--paper), -6px 6px 0 var(--paper-edge), -9px 9px 0 #3b1c0f, 0 34px 50px -16px rgba(20, 10, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.15s; /* closing: leave at once, the cover is already swinging back */
+}
+/* Opening: appear once the cover has passed the spine */
+.book:not(.at-cover) .board.left { opacity: 1; transition: opacity 0.2s calc(var(--turn) / 2); }
+.board.right { transition: box-shadow 0.3s; }
+/* Closed: the cover photo already shows the page edges, so drop the drawn ones */
+.book.is-closed .board.right { background: none; box-shadow: 0 34px 50px -16px rgba(20, 10, 0, 0.55); } /* no leather behind the photo's corners */
+.book.single .board.right { left: 0; }
+.book.single .board.left { display: none; }
+
+.page-base,
+.sheet { position: absolute; top: 0; left: 50%; width: var(--pw); height: var(--ph); }
+.book.single .page-base,
+.book.single .sheet { left: 0; }
+.page-base { border-radius: 2px 8px 8px 2px; overflow: hidden; }
+.book.is-closed .page-base { visibility: hidden; } /* would show through the cover photo's transparent edges */
+
+.sheet {
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  /* z-index flips halfway, when the sheet is edge-on, so it is always on top of its side */
+  transition: transform var(--turn) cubic-bezier(0.645, 0.045, 0.355, 1), z-index 0s linear calc(var(--turn) / 2);
+}
+.sheet.turned { transform: rotateY(-180deg); }
+/* One page at a time: a turned sheet fades once it has swung out of view */
+.book.single .sheet { opacity: 1; }
+.book.single .sheet.turned {
+  opacity: 0;
+  transition: transform var(--turn) cubic-bezier(0.645, 0.045, 0.355, 1), z-index 0s linear calc(var(--turn) / 2), opacity 0.25s calc(var(--turn) / 2);
+}
+.sheet.cover { top: -8px; width: calc(var(--pw) + 10px); height: calc(var(--ph) + 16px); }
+/* Closed book: the cover lifts a little on hover to tease the first page */
+.book.is-closed .sheet.cover { transition: transform 0.5s var(--ease); }
+.book.is-closed .sheet.cover:hover,
+.book.is-closed .sheet.cover:focus-within { transform: rotateY(-20deg); }
+
+.face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.face.front { border-radius: 2px 8px 8px 2px; cursor: pointer; }
+.face.back { transform: rotateY(180deg); border-radius: 8px 2px 2px 8px; cursor: pointer; }
+.sheet.cover .face.front { border-radius: 3px 12px 12px 3px; }
+.sheet.cover .face.back { border-radius: 12px 3px 3px 12px; }
+/* Inside of the front cover: paper pasted on the leather, flush with the spine */
+.sheet.cover .face.back .page { inset: 8px 0 8px 10px; border-radius: 6px 0 0 6px; }
+
+/* Cover */
+.cover-btn { position: absolute; inset: 0; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
+.cover-btn:focus-visible { outline: 3px solid var(--gold-1); outline-offset: -8px; }
+.book-cover { position: absolute; inset: 0; }
+.book-cover img { display: block; width: 100%; height: 100%; object-fit: fill; user-select: none; }
+
+/* Paper pages */
+.page {
+  position: absolute;
+  inset: 0;
+  padding: calc(var(--ph) * 0.1) calc(var(--pw) * 0.09);
+  background: linear-gradient(160deg, #fffdf7, var(--paper) 60%);
+  color: var(--ink);
+  cursor: inherit;
+}
+/* Gutter shadow toward the spine */
+.page::before { content: ''; position: absolute; inset: 0; pointer-events: none; }
+.face.front .page::before,
+.page-base .page::before { background: linear-gradient(to right, rgba(70, 45, 10, 0.24), rgba(70, 45, 10, 0.06) 6%, transparent 14%); }
+.face.back .page::before { background: linear-gradient(to left, rgba(70, 45, 10, 0.24), rgba(70, 45, 10, 0.06) 6%, transparent 14%); }
+.book.single .page::before { background: linear-gradient(to right, rgba(70, 45, 10, 0.16), transparent 8%); }
+
+.page-details,
+.page-awards,
+.page-end { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+.page-end { align-items: center; text-align: center; }
+.page-no-top { position: absolute; top: 18px; left: 26px; color: var(--ink-muted); font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; }
+.page-badge {
+  align-self: flex-start; padding: 2px 10px; border: 1px solid currentColor; border-radius: 999px;
+  color: #6d28d9; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.page-badge.event { color: #a24e0c; }
+.page-title { margin: 8px 0 2px; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.02rem, calc(var(--pw) * 0.05), 1.45rem); line-height: 1.25; color: var(--ink); }
+.page-issuer { margin: 0; color: var(--ink); font-size: 0.9rem; font-weight: 600; }
+.page-meta { margin: 0; color: var(--ink-muted); font-size: 0.84rem; }
+.page-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 14px; }
+.page-actions.center { justify-content: center; }
+.page-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 13px;
+  border: 1px solid var(--ink, var(--text)); border-radius: 999px; background: transparent;
+  color: var(--ink, var(--text)); font-size: 0.8rem; font-weight: 600; text-decoration: none; cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.page-btn:hover,
+.page-btn:focus-visible { background: var(--ink, var(--text)); color: var(--paper, var(--surface)); }
+.book .cert-link { color: #6d28d9; font-size: 0.82rem; }
+.page-folio { position: absolute; bottom: 14px; color: var(--ink-muted); font-family: Georgia, serif; font-size: 0.72rem; font-style: italic; }
+.page-folio.left { left: 26px; }
+.page-folio.right { right: 26px; }
+
+/* Certificate mounted on the page with photo corners */
+.page-image { display: grid; place-items: center; padding: calc(var(--ph) * 0.09) calc(var(--pw) * 0.08) calc(var(--ph) * 0.13); }
+.mounted { position: relative; display: inline-flex; margin: 0; max-width: 100%; max-height: 100%; }
+.mounted img {
+  display: block; max-width: 100%; max-height: calc(var(--ph) * 0.76); object-fit: contain;
+  background: #fff; box-shadow: 0 8px 18px rgba(60, 40, 10, 0.28), 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.photo-corner { position: absolute; width: 18px; height: 18px; background: #3b2a1a; opacity: 0.85; }
+.photo-corner.tl { top: -5px; left: -5px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.photo-corner.tr { top: -5px; right: -5px; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.photo-corner.bl { bottom: -5px; left: -5px; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.photo-corner.br { bottom: -5px; right: -5px; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.page-noimg { font-size: 3rem; color: var(--gold-3); }
+
+.page-list { list-style: none; display: grid; gap: 10px; padding: 0; margin: 10px 0 0; font-size: 0.86rem; }
+.page-list li { display: flex; gap: 10px; align-items: flex-start; }
+.page-list svg { flex-shrink: 0; margin-top: 3px; color: var(--gold-3); }
+.page-list em { color: var(--ink-muted); }
+.end-flourish { color: var(--gold-3); font-size: 2rem; line-height: 1; }
+
+/* Controls */
+.book-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; min-height: 42px; }
+.book-status { min-width: 150px; text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+.book-close { margin-left: 6px; }
+.arc-btn:disabled { opacity: 0.4; cursor: default; }
+.book-caption { width: 100%; max-width: 440px; padding: 16px 18px; }
+.book-caption p { margin: 4px 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book { --turn: 0.01s; }
+  .book.is-closed .sheet.cover:hover { transform: none; }
+}
 
 .achievements-title { text-align: center; font-size: 1.4rem; margin: 56px 0 24px; }
 .achievements { display: grid; gap: 16px; }

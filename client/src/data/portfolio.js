@@ -391,7 +391,7 @@ export const certifications = [
     date: 'Jun 2024 – Jan 2025',
     sort: '2025-01',
     image: '/certificates/wscube-mern.webp',
-    links: [{ label: 'Certificate', url: drive('1o75a5-U7PdB3vfj6e1lkZLTBbXnwgAjs') }],
+    links: [{ label: 'Certificate', url: drive('1_MWgSYgiZEpoxI6MBUupzVFrsQzGjZMg') }], // FullStack.png in the courses folder
   },
 ];
 
