@@ -130,4 +130,29 @@ describe('Errors and CORS', () => {
   it('blocks requests from origins that are not whitelisted', async () => {
     await request(app).get('/api/health').set('Origin', 'https://evil.example').expect(403);
   });
+
+  it('supports * wildcards in CLIENT_ORIGIN for per-deploy URLs', async () => {
+    const saved = process.env.CLIENT_ORIGIN;
+    process.env.CLIENT_ORIGIN = 'http://localhost:5173, https://portfolio-two-fawn*.vercel.app';
+    const wild = createApp();
+    process.env.CLIENT_ORIGIN = saved;
+
+    for (const origin of ['https://portfolio-two-fawn.vercel.app', 'https://portfolio-two-fawn-0h72eb46it.vercel.app']) {
+      const res = await request(wild).get('/api/health').set('Origin', origin).expect(200);
+      assert.equal(res.headers['access-control-allow-origin'], origin);
+    }
+    // The wildcard never crosses a dot, and the rest of the origin must match exactly.
+    await request(wild).get('/api/health').set('Origin', 'https://portfolio-two-fawn.evil.vercel.app').expect(403);
+    await request(wild).get('/api/health').set('Origin', 'http://portfolio-two-fawn.vercel.app').expect(403);
+    await request(wild).get('/api/health').set('Origin', 'https://portfolio-two-fawnXvercel.app').expect(403);
+  });
+
+  it('forgives quotes, spaces and trailing slashes in CLIENT_ORIGIN', async () => {
+    const saved = process.env.CLIENT_ORIGIN;
+    process.env.CLIENT_ORIGIN = ' "https://portfolio-two-fawn.vercel.app/" , https://other.example// ';
+    const loose = createApp();
+    process.env.CLIENT_ORIGIN = saved;
+    await request(loose).get('/api/health').set('Origin', 'https://portfolio-two-fawn.vercel.app').expect(200);
+    await request(loose).get('/api/health').set('Origin', 'https://other.example').expect(200);
+  });
 });

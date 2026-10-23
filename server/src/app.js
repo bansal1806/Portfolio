@@ -9,13 +9,36 @@ import cvRoutes from './routes/cv.js';
 import embedRoutes from './routes/embed.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
+/**
+ * CLIENT_ORIGIN as a clean list. Forgives the usual copy-paste slips: surrounding quotes,
+ * spaces and trailing slashes (a browser's Origin header never ends with "/").
+ */
+export function parseOrigins(list = process.env.CLIENT_ORIGIN || 'http://localhost:5173') {
+  return list
+    .split(',')
+    .map((o) => o.trim().replace(/^["']|["']$/g, '').trim().replace(/\/+$/, ''))
+    .filter(Boolean);
+}
+
+/**
+ * Turns CLIENT_ORIGIN entries into matchers. An entry may use `*` for any run of letters,
+ * digits and dashes (never a dot), e.g. `https://portfolio-two-fawn*.vercel.app` matches the
+ * stable Vercel domain and every per-deploy URL like `portfolio-two-fawn-0h72eb46it.vercel.app`.
+ */
+function originMatchers(list) {
+  return parseOrigins(list).map((o) => {
+    if (!o.includes('*')) return (origin) => origin === o;
+    const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`^${o.split('*').map(escape).join('[a-z0-9-]*')}$`, 'i');
+    return (origin) => re.test(origin);
+  });
+}
+
 export function createApp() {
   const app = express();
 
-  const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
-    .split(',')
-    .map((o) => o.trim())
-    .filter(Boolean);
+  const allowed = originMatchers();
+  const isAllowed = (origin) => allowed.some((match) => match(origin));
 
   app.set('trust proxy', 1); // Vercel/Render sit behind a proxy
   app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
@@ -33,7 +56,7 @@ export function createApp() {
         /* malformed Origin header, e.g. "null" */
       }
       // Also allow non-browser requests (no Origin header) and whitelisted origins.
-      if (!origin || sameOrigin || allowedOrigins.includes(origin)) {
+      if (!origin || sameOrigin || isAllowed(origin)) {
         return cb(null, { origin: true, exposedHeaders: ['Content-Disposition'] });
       }
       return cb(new Error(`Origin ${origin} not allowed by CORS`));

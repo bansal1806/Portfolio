@@ -1,14 +1,16 @@
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import { createApp } from './app.js';
+import { createApp, parseOrigins } from './app.js';
 import { connectDB } from './config/db.js';
 
 const app = createApp();
 
 if (process.env.NODE_ENV === 'production') {
-  const missing = ['MONGODB_URI'].filter((k) => !process.env[k]);
+  const missing = ['MONGODB_URI', 'CLIENT_ORIGIN'].filter((k) => !process.env[k]);
   if (missing.length) console.warn(`[config] Missing environment variables: ${missing.join(', ')}`);
 }
+// Shows up in the host's logs, so it's easy to confirm which sites may call the API.
+console.log(`[cors] Allowed origins: ${parseOrigins().join(', ')}`);
 
 await connectDB(process.env.MONGODB_URI);
 
