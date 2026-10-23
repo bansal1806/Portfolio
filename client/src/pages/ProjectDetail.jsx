@@ -3,12 +3,15 @@ import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiArrowLeft, FiCheckCircle, FiExternalLink, FiGithub } from 'react-icons/fi';
 import NotFound from './NotFound.jsx';
-import SitePreview from '../components/SitePreview.jsx';
+import SitePreview, { useEmbeddable } from '../components/SitePreview.jsx';
 import { profile, projects } from '../data/portfolio.js';
 
 export default function ProjectDetail() {
   const { slug } = useParams();
-  const project = projects.find((p) => p.slug === slug);
+  const index = projects.findIndex((p) => p.slug === slug);
+  const project = projects[index];
+  // Same check the cards use, so a site shows live everywhere or nowhere.
+  const canEmbed = useEmbeddable(project?.live ?? '', Boolean(project?.live && (project.embeddable || project.liveCard)));
 
   useEffect(() => {
     document.title = project ? `${project.name} | ${profile.name}` : `Not found | ${profile.name}`;
@@ -16,8 +19,9 @@ export default function ProjectDetail() {
 
   if (!project) return <NotFound />;
 
-  const { name, description, highlights = [], tech, github, live, preview, embeddable, year } = project;
-  const others = projects.filter((p) => p.slug !== slug).slice(0, 3);
+  const { name, description, highlights = [], tech, github, live, preview, year, role } = project;
+  // The next three projects in the list (wrapping around), so every page links somewhere new.
+  const others = Array.from({ length: Math.min(3, projects.length - 1) }, (_, i) => projects[(index + i + 1) % projects.length]);
 
   return (
     <section className="section page-top">
@@ -32,14 +36,14 @@ export default function ProjectDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <SitePreview url={live} image={preview} title={name} scroll="manual" live={embeddable} />
+          <SitePreview url={live} image={preview} title={name} scroll="manual" live={canEmbed} />
           <p className="muted small detail-cover-note">
-            {embeddable ? 'Live site — interact with it right here.' : 'Scroll inside the preview to explore the full page.'}
+            {canEmbed ? 'Live site — interact with it right here.' : 'Scroll inside the preview to explore the full page.'}
           </p>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}>
-          {year && <p className="muted small">{year}</p>}
+          {(year || role) && <p className="muted small">{[year, role].filter(Boolean).join(' · ')}</p>}
           <h1 className="detail-title">{name}</h1>
           <p className="detail-desc muted">{description}</p>
 
@@ -64,9 +68,11 @@ export default function ProjectDetail() {
                 <FiGithub aria-hidden="true" /> View code on GitHub
               </a>
             )}
-            <a href={live} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-              <FiExternalLink aria-hidden="true" /> Open live demo
-            </a>
+            {live && (
+              <a href={live} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                <FiExternalLink aria-hidden="true" /> Open live demo
+              </a>
+            )}
           </div>
         </motion.div>
 

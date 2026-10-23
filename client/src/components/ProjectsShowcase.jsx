@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import ProjectCard from './ProjectCard.jsx';
+import ProjectsArc from './ProjectsArc.jsx';
 
 // Undated projects (year: null) always sort after dated ones.
 const byYear = (dir) => (a, b) => (a.year == null) - (b.year == null) || dir * ((a.year ?? 0) - (b.year ?? 0));
@@ -11,7 +10,10 @@ const SORTS = {
   name: { label: 'Name (A–Z)', fn: (a, b) => a.name.localeCompare(b.name) },
 };
 
-/** Project grid with technology filter chips and a sort dropdown. */
+/**
+ * Filter chips, a sort dropdown and a result count above the full-width projects carousel.
+ * Render it outside `.container`: the controls get their own container, the arc runs edge to edge.
+ */
 export default function ProjectsShowcase({ projects }) {
   const [filter, setFilter] = useState('All');
   const [sort, setSort] = useState('newest');
@@ -30,35 +32,32 @@ export default function ProjectsShowcase({ projects }) {
 
   return (
     <>
-      <div className="project-controls">
-        <div className="chips" role="group" aria-label="Filter projects by technology">
-          {techs.map((t) => (
-            <button key={t} type="button" className="chip" aria-pressed={filter === t} onClick={() => setFilter(t)}>
-              {t}
-            </button>
-          ))}
-        </div>
-        <label className="sort">
-          <span className="visually-hidden">Sort projects</span>
-          <select value={sort} onChange={(e) => setSort(e.target.value)}>
-            {Object.entries(SORTS).map(([k, v]) => (
-              <option key={k} value={k}>{v.label}</option>
+      <div className="container">
+        <div className="project-controls">
+          <div className="chips" role="group" aria-label="Filter projects by technology">
+            {techs.map((t) => (
+              <button key={t} type="button" className="chip" aria-pressed={filter === t} onClick={() => setFilter(t)}>
+                {t}
+              </button>
             ))}
-          </select>
-        </label>
+          </div>
+          <label className="sort">
+            <span className="visually-hidden">Sort projects</span>
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              {Object.entries(SORTS).map(([k, v]) => (
+                <option key={k} value={k}>{v.label}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <p className="muted small results-count" aria-live="polite">
+          Showing {visible.length} of {projects.length} projects
+        </p>
       </div>
 
-      <p className="muted small results-count" aria-live="polite">
-        Showing {visible.length} of {projects.length} projects
-      </p>
-
-      <motion.div layout className="projects-grid">
-        <AnimatePresence mode="popLayout">
-          {visible.map((p) => (
-            <ProjectCard key={p.slug} project={p} />
-          ))}
-        </AnimatePresence>
-      </motion.div>
+      {/* Remount on every filter/sort change so the arc starts fresh with the first match centered. */}
+      <ProjectsArc key={`${filter}|${sort}`} projects={visible} />
     </>
   );
 }

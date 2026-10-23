@@ -67,12 +67,36 @@ export const skillGroups = [
 export const proficiencyLabel = (level) =>
   level >= 85 ? 'Advanced' : level >= 70 ? 'Proficient' : level >= 55 ? 'Intermediate' : 'Beginner';
 
-// Projects. `tech` drives the filter chips, `year` the date sort (null = undated, sorted last).
+// Projects. `tech` drives the filter chips (technologies only), `year` the date sort
+// (null = undated, sorted last; same-year projects keep this file's order).
+// `role` is an optional label on the card and detail page, e.g. 'Solo project', 'Team lead'.
+// `live` is optional (null = not deployed): the card then shows its screenshot with no Live
+// site button; add `/previews/<slug>.webp` by hand since capture:previews needs a live URL.
+// `embeddable`: try the live site on the detail page. `liveCard`: also run it inside the card
+// (large screens). Both are confirmed at runtime by the API's embed check.
 // `preview` is a full-page screenshot of the live site — refresh them all with
 // `npm run capture:previews` (client folder) after a site changes.
 const GH = 'https://github.com/bansal1806';
 
 export const projects = [
+  {
+    slug: 'vibe',
+    name: 'Vibe',
+    year: 2026,
+    featured: true,
+    description:
+      'A verified-students-only campus social platform: meet people at your college, join pop-up "Now Rooms" and unlock each other’s identity as trust grows. Web, iOS and Android on one backend.',
+    highlights: [
+      'Progressive identity: profiles start as an alias and avatar, and details unlock only as two-way trust grows',
+      'Pop-up Now Rooms with group chats that close when the room ends, plus time capsules that open on a set date',
+      'Real-time chat over Server-Sent Events with Redis pub/sub, and privacy-safe push notifications',
+      'Next.js web app and Expo (React Native) iOS/Android apps sharing one API, database and avatar engine',
+      'Email-code sign-in for .edu addresses, rate limits, CSRF protection and row-level security on every table',
+    ],
+    tech: ['Next.js', 'React Native', 'Expo', 'TypeScript', 'PostgreSQL', 'Prisma', 'Redis', 'Supabase'],
+    // No github link: the repo is private.
+    live: 'https://vibe-mu-ebon.vercel.app/',
+  },
   {
     slug: 'nexide',
     name: 'NexIDE',
@@ -109,7 +133,7 @@ export const projects = [
   },
   {
     slug: 'dhund',
-    embeddable: true, // site allows iframes → live preview on the detail page
+    embeddable: true,
     name: 'DHUND',
     year: 2026,
     featured: true,
@@ -121,7 +145,7 @@ export const projects = [
       'Real-time surveillance simulation and crowdsourced sighting reports',
       'React frontend with a Python FastAPI backend',
     ],
-    tech: ['React', 'FastAPI', 'Python', 'Supabase', 'pgvector', 'Computer Vision'],
+    tech: ['React', 'FastAPI', 'Python', 'Supabase', 'pgvector'],
     github: `${GH}/DHUND`,
     live: 'https://dhund.vercel.app/',
   },
@@ -143,8 +167,8 @@ export const projects = [
   },
   {
     slug: 'hackjklu',
-    // Card runs the real site. Requires hackjklu.com to allow framing from this portfolio
-    // (frame-ancestors in its vercel.json) — otherwise the browser blocks the iframe.
+    // Requires hackjklu.com to allow framing from this portfolio (frame-ancestors in its
+    // vercel.json) — otherwise the embed check fails and the screenshot shows.
     liveCard: true,
     name: 'HackJKLU v5.0',
     year: 2026,
@@ -162,52 +186,56 @@ export const projects = [
   },
   {
     slug: 'ab-creation',
-    embeddable: true, // site allows iframes → live preview on the detail page
+    embeddable: true,
     name: 'AB Creation',
     year: null,
     featured: true,
     description:
       'An online store for custom apparel and printing, where customers can shop ready-made printed tees or bring their own design.',
-    tech: ['Next.js', 'E-commerce'],
+    tech: ['Next.js'],
     live: 'https://ab-creations-web.vercel.app/',
   },
   {
     slug: 'antah',
     name: 'Antah',
     year: null,
-    featured: false,
+    featured: true,
+    role: 'Client project',
     description:
-      'A spiritual wellness store for authentic Rudraksha, energized gemstone bracelets and malas, with shopping by Rashi, concern or sacred stone.',
-    tech: ['Shopify', 'E-commerce'],
+      'Shopify storefront for Antah, a spiritual wellness brand selling Rudraksha, gemstone bracelets and malas, with shopping by Rashi, concern or sacred stone.',
+    tech: ['Shopify'],
     live: 'https://antah.in/',
   },
   {
     slug: 'soqo',
     name: 'SOQO',
     year: null,
-    featured: false,
+    featured: true,
+    role: 'Client project',
     description:
-      'The storefront for SOQO, an Indian brand of soft, washable leakproof underwear designed to replace daily pantyliners.',
-    tech: ['Shopify', 'E-commerce'],
+      'Shopify storefront for SOQO, an Indian brand of washable leakproof underwear, presenting the product range and its everyday benefits.',
+    tech: ['Shopify'],
     live: 'https://soqo.in/',
   },
   {
     slug: 'exemplar-jewels',
     name: 'Exemplar Jewels',
     year: null,
-    featured: false,
-    description: 'An online jewellery store showcasing and selling Exemplar’s jewellery collections.',
-    tech: ['Shopify', 'E-commerce'],
+    featured: true,
+    role: 'Client project',
+    description: 'Shopify storefront for Exemplar Jewels, showcasing and selling the brand’s jewellery collections online.',
+    tech: ['Shopify'],
     live: 'https://exemplarjewels.com/',
   },
   {
     slug: 'in-plain-sight',
     name: 'In Plain Sight',
     year: null,
-    featured: false,
+    featured: true,
+    role: 'Client project',
     description:
-      'An e-commerce store for premium hand-pounded spices and cold-pressed oils, made honestly for modern families.',
-    tech: ['Shopify', 'E-commerce'],
+      'Shopify storefront for In Plain Sight, a brand of hand-pounded spices and cold-pressed oils.',
+    tech: ['Shopify'],
     live: 'https://inplainsight.co.in/',
   },
 ].map((p) => ({ preview: `/previews/${p.slug}.webp`, ...p }));

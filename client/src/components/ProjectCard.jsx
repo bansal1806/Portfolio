@@ -4,7 +4,7 @@ import { FiArrowUpRight, FiExternalLink, FiGithub } from 'react-icons/fi';
 import SitePreview from './SitePreview.jsx';
 
 export default function ProjectCard({ project }) {
-  const { slug, name, description, tech, github, live, preview, liveCard, year } = project;
+  const { slug, name, description, tech, github, live, preview, liveCard, year, role } = project;
 
   return (
     <motion.article
@@ -16,7 +16,8 @@ export default function ProjectCard({ project }) {
       whileHover={{ y: -8 }}
       className="project-card card"
     >
-      <Link to={`/projects/${slug}`} className="project-cover" aria-label={`Read more about ${name}`}>
+      {/* Mouse shortcut only: the title link below is the one keyboard/screen-reader users get. */}
+      <Link to={`/projects/${slug}`} className="project-cover" tabIndex={-1} aria-hidden="true">
         <SitePreview url={live} image={preview} title={name} liveCard={liveCard} />
         {year && <span className="project-year">{year}</span>}
       </Link>
@@ -27,6 +28,7 @@ export default function ProjectCard({ project }) {
             {name} <FiArrowUpRight aria-hidden="true" className="project-arrow" />
           </Link>
         </h3>
+        {role && <p className="project-role">{role}</p>}
         <p className="muted project-desc">{description}</p>
 
         <ul className="tech-list" aria-label="Tech stack">
@@ -41,9 +43,11 @@ export default function ProjectCard({ project }) {
               <FiGithub aria-hidden="true" /> Code
             </a>
           )}
-          <a href={live} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
-            <FiExternalLink aria-hidden="true" /> Live site
-          </a>
+          {live && (
+            <a href={live} target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">
+              <FiExternalLink aria-hidden="true" /> Live site
+            </a>
+          )}
         </div>
       </div>
     </motion.article>

@@ -17,8 +17,8 @@ export default function ProjectsPage() {
           title="Project archive"
           subtitle="Everything I've built so far. Filter by technology or sort by date and name."
         />
-        <ProjectsShowcase projects={projects} />
       </div>
+      <ProjectsShowcase projects={projects} />
     </section>
   );
 }

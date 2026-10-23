@@ -449,7 +449,9 @@
   transition: object-position 1.2s var(--ease);
 }
 .project-card:hover .scroll-hover img,
-.project-cover:focus-visible .scroll-hover img {
+.project-card:focus-within .scroll-hover img,
+.arc-inner:hover .scroll-hover img,
+.arc-inner:focus-within .scroll-hover img {
   object-position: bottom;
   transition: object-position 7s linear;
 }
@@ -518,12 +520,93 @@
 .project-title a:hover { color: var(--primary); }
 .project-arrow { transition: transform 0.25s var(--ease); }
 .project-title a:hover .project-arrow { transform: translate(3px, -3px); }
+.project-role { margin: -4px 0 8px; color: var(--primary); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
 .project-desc { font-size: 0.93rem; flex: 1; }
 
 .tech-list { list-style: none; padding: 0; margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px; }
 .project-links { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .center-cta { display: flex; justify-content: center; margin-top: 40px; }
+
+/* Home: projects on an endless curved strip (positions set per frame in ProjectsArc.jsx) */
+.arc { margin-top: -40px; } /* the stage has shadow room above the cards; pull it up */
+.arc-stage {
+  position: relative;
+  /* clip, not hidden: focusing a card must not scroll the stage. Only the sides are cut. */
+  overflow-x: clip;
+  overflow-y: visible;
+  perspective: 1600px;
+  perspective-origin: 50% 50%; /* camera level with the cards: all centers stay on one line */
+  touch-action: pan-y; /* vertical swipes still scroll the page */
+  user-select: none;
+  cursor: grab;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.arc-stage.dragging { cursor: grabbing; }
+.arc-stage.dragging .arc-link,
+.arc-stage.dragging .arc-action { pointer-events: none; }
+.arc-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(220px, 24vw, 320px);
+  visibility: hidden; /* until the first frame places it */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.arc-inner {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow), 0 30px 40px -24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+  transition: transform 0.3s var(--ease), border-color 0.3s, box-shadow 0.3s;
+}
+.arc-link { display: block; }
+.arc-inner:hover,
+.arc-inner:focus-within {
+  transform: translateY(-8px);
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+  box-shadow: var(--shadow-lg);
+}
+.arc-shot { position: relative; display: block; }
+.arc-shot .site-preview { border: 0; border-bottom: 1px solid var(--border); border-radius: 0; }
+.arc-stage img { pointer-events: none; -webkit-user-drag: none; } /* no native image drag while dragging the strip */
+.arc-year { top: 40px; right: 10px; }
+.arc-body { display: flex; flex-direction: column; gap: 4px; padding: 14px 92px 16px 16px; } /* right padding: room for the buttons */
+.arc-actions { position: absolute; right: 12px; bottom: 14px; display: flex; gap: 6px; }
+.arc-action {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.arc-action:hover,
+.arc-action:focus-visible { color: var(--primary); border-color: var(--primary); background: var(--surface); }
+.arc-title { font-weight: 700; font-size: 1.05rem; color: var(--text); }
+.arc-tech { color: var(--text-muted); font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.arc-nav { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: -40px; position: relative; z-index: 1; }
+.arc-btn {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.arc-btn:hover { border-color: var(--primary); color: var(--primary); }
 
 /* Project detail page */
 .detail { max-width: 960px; }
